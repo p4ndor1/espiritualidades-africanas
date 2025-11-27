@@ -1,4 +1,4 @@
-// explorar.js - Versão 4.0: Abas, Mapa Corrigido e UI Otimizada
+// explorar.js - Versão 5.0: Filtro de Ano por Intervalo, Filtros Específicos e Busca Global
 
 let fullData = {};
 let filteredRecords = [];
@@ -34,11 +34,10 @@ const initPage = () => {
     }
 };
 
-// --- Mapa ---
+// --- Mapa (Mantido igual) ---
 const initMap = () => {
     map = L.map('map-placeholder').setView([20, 0], 3);
     
-    // Tema Escuro
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap &copy; CARTO',
         maxZoom: 19
@@ -61,7 +60,6 @@ const updateMapMarkers = (records) => {
     const validMarkers = [];
 
     records.forEach(record => {
-        // CORREÇÃO 1: Procura qualquer campo que contenha "Geolocalização" (funciona para Pessoas e Documentos)
         const geoDetail = (record.details || []).find(d => d.fieldName.includes('Geolocalização'));
         
         if (geoDetail && geoDetail.value && geoDetail.value.geo && geoDetail.value.geo.wkt) {
@@ -98,7 +96,7 @@ window.displayRecordDetailsFromMap = (recID) => {
     }
 };
 
-// --- Detalhes do Registro (Lógica Melhorada) ---
+// --- Detalhes do Registro ---
 const displayRecordDetails = (record) => {
     document.querySelectorAll('.document-item').forEach(item => item.classList.remove('selected'));
     const activeItem = document.querySelector(`[data-record-id="${record.rec_ID}"]`);
@@ -106,24 +104,20 @@ const displayRecordDetails = (record) => {
 
     const title = record.rec_Title ? record.rec_Title.replace(/\n/g, '<br>') : "Sem Título";
     
-    // Separação dos dados para reorganização
     let summary = "";
-    let transcriptions = {}; // Objeto para guardar as transcrições
+    let transcriptions = {};
     let mainInfo = [];
-    let peopleInfo = {}; // Agrupa pessoas por tipo (Denunciante, Citado, etc.)
+    let peopleInfo = {};
     let links = [];
 
     (record.details || []).forEach(detail => {
         let label = detail.fieldName;
-        
-        // CORREÇÃO 2: Trata [object Object] extraindo o título se for um recurso vinculado
         let value = detail.termLabel || detail.value;
         if (typeof value === 'object' && value !== null && value.title) {
-            value = value.title.replace(/\n/g, ' - '); // Formata título do objeto vinculado
+            value = value.title.replace(/\n/g, ' - ');
         }
         value = String(value || 'N/A');
 
-        // Classificação dos campos
         if (label === 'Resumo do documento') {
             summary = value;
         } else if (label.includes('Transcrição')) {
@@ -138,17 +132,14 @@ const displayRecordDetails = (record) => {
         }
     });
 
-    // --- Construção do HTML ---
     let html = `<h2 style="color: var(--color-accent); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">${title}</h2>`;
     
-    // 1. Informações Principais (Ano, Local, Tipo...)
     html += `<div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">`;
     mainInfo.forEach(info => {
         html += `<div><span class="detail-label">${info.label}</span><span class="detail-value">${info.value}</span></div>`;
     });
     html += `</div>`;
 
-    // 2. Pessoas e Autoridades (Agrupadas)
     if (Object.keys(peopleInfo).length > 0) {
         html += `<div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">`;
         for (const [role, names] of Object.entries(peopleInfo)) {
@@ -161,7 +152,6 @@ const displayRecordDetails = (record) => {
         html += `</div>`;
     }
 
-    // 3. Links e Fontes (Movido para cima)
     if (links.length > 0) {
         html += `<div style="margin-top: 20px; background: rgba(228, 214, 167, 0.05); padding: 15px; border-radius: 5px;">`;
         links.forEach(info => {
@@ -174,7 +164,6 @@ const displayRecordDetails = (record) => {
         html += `</div>`;
     }
 
-    // 4. Resumo
     if (summary) {
         html += `
             <div style="margin-top: 25px;">
@@ -184,22 +173,16 @@ const displayRecordDetails = (record) => {
         `;
     }
 
-    // 5. Abas de Transcrição (CORREÇÃO 3)
     const transKeys = Object.keys(transcriptions);
     if (transKeys.length > 0) {
-        html += `<div class="tabs-container">
-                    <div class="tabs-header">`;
-        
-        // Botões das Abas
+        html += `<div class="tabs-container"><div class="tabs-header">`;
         transKeys.forEach((key, index) => {
             const activeClass = index === 0 ? 'active' : '';
-            // Simplifica o nome para o botão (remove "Transcrição ")
             const btnLabel = key.replace('Transcrição ', ''); 
             html += `<button class="tab-btn ${activeClass}" onclick="switchTab('${index}')">${btnLabel}</button>`;
         });
         html += `</div>`;
 
-        // Conteúdo das Abas
         transKeys.forEach((key, index) => {
             const activeClass = index === 0 ? 'active' : '';
             html += `<div id="tab-content-${index}" class="tab-content ${activeClass}">${transcriptions[key]}</div>`;
@@ -210,19 +193,14 @@ const displayRecordDetails = (record) => {
     detailContainer.innerHTML = html;
 };
 
-// Função global para troca de abas
 window.switchTab = (index) => {
-    // Remove ativo de todos
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    
-    // Ativa o clicado
-    // Nota: O querySelectorAll retorna na ordem do DOM, então o índice funciona se a estrutura for mantida
     document.querySelectorAll('.tab-btn')[index].classList.add('active');
     document.getElementById(`tab-content-${index}`).classList.add('active');
 };
 
-// --- Filtros e Lista (Mantido igual, apenas recarregado para contexto) ---
+// --- Filtros e Lista ---
 const populateEntityFilter = () => {
     const records = fullData.heurist.records || [];
     const entityTypes = new Set();
@@ -243,10 +221,16 @@ const generateDynamicFilters = () => {
         if (!allFields[recType]) allFields[recType] = new Map();
 
         (record.details || []).forEach(detail => {
+            // Verifica se é campo de ano para tratar diferente
+            if (detail.fieldName === 'Ano(s) de produção') {
+                // Apenas marca que existe, não coleta valores individuais ainda
+                 if (!allFields[recType].has('Ano(s) de produção')) allFields[recType].set('Ano(s) de produção', new Set());
+                 return;
+            }
+
             const isFilterable = ['enum', 'freetext', 'date'].includes(detail.fieldType) || !detail.fieldType;
             if (isFilterable && !['Resumo do documento', 'Transcrição', 'Transcrição semidiplomática', 'Transcrição modernizada'].includes(detail.fieldName)) {
                 let valueLabel = detail.termLabel || detail.value;
-                // Trata objeto no filtro também
                 if (typeof valueLabel === 'object' && valueLabel?.title) valueLabel = valueLabel.title;
                 
                 if (valueLabel) {
@@ -258,7 +242,32 @@ const generateDynamicFilters = () => {
     });
 
     dynamicFiltersContainer.innerHTML = '';
-    const priorityFields = ['Tipologia documental', 'Ano(s) de produção', 'Local de referência', 'Qualidade ou cor', 'Condição jurídica', 'Ofício', 'Nação'];
+    
+    // 2. Definição de Campos Prioritários (Configuração dos filtros laterais)
+    let priorityFields = ['Local de referência', 'Qualidade ou cor', 'Condição jurídica', 'Nação'];
+    
+    // Adiciona filtros específicos se for Pessoa
+    if (selectedEntity === 'Pessoa') {
+        priorityFields.push('Papel', 'Tipo de prática');
+    } else if (selectedEntity === 'Documento') {
+        priorityFields.push('Tipologia documental');
+    }
+    
+    // Renderiza Filtro de Ano (Intervalo) se existir dados de ano
+    const hasYearData = Object.keys(allFields).some(type => allFields[type].has('Ano(s) de produção'));
+    
+    if (hasYearData || selectedEntity === 'all') {
+        dynamicFiltersContainer.innerHTML += `
+            <div class="filter-group">
+                <label>Ano(s) de produção:</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="year-min" placeholder="De" class="dynamic-filter-year" style="width: 50%;">
+                    <input type="number" id="year-max" placeholder="Até" class="dynamic-filter-year" style="width: 50%;">
+                </div>
+            </div>
+        `;
+    }
+
     const entitiesProcess = selectedEntity === 'all' ? Object.keys(allFields) : [selectedEntity];
     const renderedFilters = new Set();
 
@@ -276,12 +285,21 @@ const generateDynamicFilters = () => {
             });
         }
     });
+    
+    // Re-adiciona listeners para os novos inputs de ano
+    document.querySelectorAll('.dynamic-filter-year').forEach(input => {
+        input.addEventListener('input', applyFilters);
+    });
 };
 
 const applyFilters = () => {
     const selectedEntity = entityFilter.value;
     const activeFilters = {};
     const searchText = searchInput.value.toLowerCase().trim();
+    
+    // Captura valores de ano
+    const yearMin = parseInt(document.getElementById('year-min')?.value) || 0;
+    const yearMax = parseInt(document.getElementById('year-max')?.value) || 9999;
 
     document.querySelectorAll('.dynamic-filter').forEach(select => {
         if (select.value !== 'all') activeFilters[select.dataset.fieldName] = select.value;
@@ -289,8 +307,24 @@ const applyFilters = () => {
 
     filteredRecords = (fullData.heurist.records || []).filter(record => {
         const recType = record.rec_RecTypeName || "Outros";
+        
+        // 1. Filtro por Tipo de Entidade
         if (selectedEntity !== 'all' && recType !== selectedEntity) return false;
         
+        // 2. Filtro de Ano (Intervalo)
+        // Procura o campo de ano neste registro
+        const yearDetail = (record.details || []).find(d => d.fieldName === 'Ano(s) de produção');
+        if (yearDetail) {
+            let recYear = parseInt(yearDetail.value);
+            // Se o valor for um objeto complexo de data (ex: {start:..., end:...}), tenta extrair
+            if (typeof yearDetail.value === 'object') {
+                 recYear = parseInt(yearDetail.value.start?.earliest || yearDetail.value.estMinDate || 0);
+            }
+            
+            if (recYear < yearMin || recYear > yearMax) return false;
+        }
+
+        // 3. Filtro de Seleção Dinâmico (Dropdowns)
         const passesDynamicFilters = Object.keys(activeFilters).every(fieldName => {
             const filterValue = activeFilters[fieldName];
             return (record.details || []).some(detail => {
@@ -305,19 +339,29 @@ const applyFilters = () => {
         
         if (!passesDynamicFilters) return false;
         
+        // 4. Filtro de Busca por Texto (GLOBAL - Varre tudo)
         if (searchText.length > 0) {
-            let passesTextSearch = false;
-            const searchableText = (record.rec_Title || '').toLowerCase();
-            if (searchableText.includes(searchText)) passesTextSearch = true;
-            else {
-                passesTextSearch = (record.details || []).some(detail => {
-                    let val = detail.termLabel || detail.value;
-                    if (typeof val === 'object' && val?.title) val = val.title;
-                    return String(val || '').toLowerCase().includes(searchText);
-                });
-            }
-            if (!passesTextSearch) return false;
+            // Verifica título
+            const titleMatch = (record.rec_Title || '').toLowerCase().includes(searchText);
+            if (titleMatch) return true;
+
+            // Verifica TODOS os detalhes (incluindo transcrições inteiras)
+            const detailsMatch = (record.details || []).some(detail => {
+                let val = detail.termLabel || detail.value;
+                
+                // Tratamento para objetos (links, geo, datas complexas)
+                if (typeof val === 'object') {
+                    if (val?.title) val = val.title; // Link para recurso
+                    else if (val?.geo) return false; // Pula geo
+                    else val = JSON.stringify(val); // Tenta stringify para outros objetos
+                }
+                
+                return String(val || '').toLowerCase().includes(searchText);
+            });
+            
+            if (!detailsMatch) return false;
         }
+
         return true;
     });
 
@@ -330,7 +374,7 @@ const renderResultsList = (records) => {
     resultsCountSpan.textContent = records.length;
     
     if (records.length === 0) {
-        recordsContainer.innerHTML = `<li style="padding:10px; opacity: 0.8;">Nenhum item encontrado.</li>`;
+        recordsContainer.innerHTML = `<li style="padding:10px; opacity: 0.8;">Nenhum item encontrado com os filtros atuais.</li>`;
         return;
     }
 
@@ -353,7 +397,6 @@ const clearFilters = () => {
     applyFilters();
 };
 
-// Listeners
 const setupEventListeners = () => {
     entityFilter.addEventListener('change', () => { generateDynamicFilters(); applyFilters(); });
     searchInput.addEventListener('input', applyFilters);
