@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espiritualidades Africanas - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <style>
+        /* --- Estilos Gerais da Home --- */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            /* Alterado de center para flex-start para evitar que suba demais */
+            justify-content: center; 
+            align-items: center;
+        }
+
+        .hero h1 {
+            /* Reduzido de 4em para 3em para ficar mais elegante */
+            font-size: 3em; 
+            margin-bottom: 15px;
+            color: var(--color-gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+            line-height: 1.2;
+            max-width: 900px; /* Impede que fique muito largo em telas ultra-wide */
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            max-width: 700px;
+            margin-bottom: 40px;
+            color: #FFF;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+            font-weight: 300;
+        }
+
+        .presentation-section {
+            padding: 50px 0;
+        }
+
+        /* Grid Inteligente para Artigos */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* Cartão de Artigo */
+        .article-card {
+            background-color: var(--bg-glass-dark);
+            border: 1px solid rgba(228, 214, 167, 0.3);
+            padding: 30px;
+            border-radius: 8px;
+            transition: transform 0.3s, border-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-accent);
+        }
+
+        .article-card h3 {
+            color: var(--color-accent);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-family: var(--font-heading);
+        }
+
+        /* --- AJUSTES DE RESPONSIVIDADE (Mobile) --- */
+        @media (max-width: 768px) {
+            main {
+                /* Aumentei o espaço para garantir que a navbar não cubra nada */
+                padding-top: 90px; 
+            }
+
+            .hero {
+                padding: 40px 20px;
+                /* Reduz a altura mínima para não forçar rolagem desnecessária */
+                min-height: auto; 
+                /* Garante margem extra no topo no mobile */
+                margin-top: 20px; 
+            }
+
+            .hero h1 {
+                /* Reduzido drasticamente para caber na tela do celular */
+                font-size: 1.8em; 
+                margin-bottom: 10px;
+            }
+
+            .hero p {
+                font-size: 1em;
+                margin-bottom: 30px;
+                padding: 0 10px;
+            }
+
+            .content-box {
+                padding: 25px !important;
+            }
+
+            .content-box h2 {
+                font-size: 1.5em;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr; 
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+   <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <img src="img/Logo projeto.png" alt="Logo" onerror="this.style.display='none';">
+            </a>
+
+            <div class="hamburger-menu" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explorar.html">Explorar</a></li>
+                <li><a href="historico.html">Histórico</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Espiritualidades Africanas</h1>
+                <p>A circulação de atores e saberes e os poderes e resistências em África</p>
+                <a href="explorar.html" class="cta-button">Explorar a Base de Dados</a>
+            </div>
+        </section>
+
+        <section class="presentation-section">
+            <div class="container">
+                <div class="content-box">
+                    <h2 style="color: var(--color-accent); border-bottom: 1px solid var(--color-accent); display: inline-block; padding-bottom: 5px; margin-bottom: 15px;">O Projeto</h2>
+                    <p>
+                        Este projeto dedica-se à análise e divulgação de fontes históricas sobre as espiritualidades africanas e suas diásporas. Através da plataforma Heurist, organizamos documentos e trajetórias que revelam a complexidade das práticas religiosas e sociais.
+                    </p>
+                    <p style="margin-top: 15px;">
+                        <strong>Objetivos:</strong> Mapear denúncias, itinerários e biografias, promovendo um olhar crítico e académico sobre a história religiosa africana e a sua repressão histórica.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="presentation-section">
+            <div class="container">
+                <h2 style="color: var(--color-white); text-align: center; margin-bottom: 40px; font-family: var(--font-heading);">Textos e Análises</h2>
+                <div class="articles-grid">
+                    
+                    <div class="article-card">
+                        <h3>O Legado do Vento</h3>
+                        <p>Uma análise sobre as práticas de feitiçaria em Angola no Século XVIII e as suas conexões com o Brasil colonial.</p>
+                        <a href="#" style="display:block; margin-top:15px; font-weight:bold; color: var(--color-gold);">Ler artigo completo »</a>
+                    </div>
+
+                    <div class="article-card">
+                        <h3>Resistências Espirituais</h3>
+                        <p>Como as práticas religiosas serviram como ferramenta de resistência cultural e política face à administração colonial.</p>
+                        <a href="#" style="display:block; margin-top:15px; font-weight:bold; color: var(--color-gold);">Ler artigo completo »</a>
+                    </div>
+
+                    <div class="article-card">
+                        <h3>Itinerâncias Atlânticas</h3>
+                        <p>O trânsito de saberes religiosos entre as margens do Atlântico Sul e a reconfiguração de identidades.</p>
+                        <a href="#" style="display:block; margin-top:15px; font-weight:bold; color: var(--color-gold);">Ler artigo completo »</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Grupo de Pesquisa Itinerâncias.</p>
+            <p style="font-size: 0.8em; opacity: 0.7; margin-top: 5px;">Plataforma Heurist | Departamento de História</p>
+        </div>
+    </footer>
+
+</body>
+</html>

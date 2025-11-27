@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espiritualidades Africanas - Sobre o Grupo</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <style>
+        main{padding-top: 125px;}
+        .intro-text {
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            text-align: justify;
+            color: var(--color-gold);
+        }
+
+        .section-box {
+            background-color: var(--bg-glass-dark);
+            padding: 40px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(228, 214, 167, 0.2);
+            border-left: 5px solid var(--color-accent);
+        }
+
+        .section-box h2 {
+            color: var(--color-gold);
+            border-bottom: 1px solid var(--color-accent);
+            display: inline-block;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-family: var(--font-heading);
+        }
+        
+        .section-box h3 {
+            color: var(--color-white);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .section-box p {
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .leaders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .leader-card {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 8px;
+            border: 1px solid var(--color-gold);
+            transition: transform 0.3s;
+        }
+
+        .leader-card:hover {
+            transform: translateY(-5px);
+            background: rgba(155, 41, 21, 0.1);
+        }
+
+        .leader-card img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid var(--color-accent);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(228, 214, 167, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--color-accent);
+        }
+
+        .institution-list {
+            columns: 2;
+            list-style: none;
+        }
+
+        .institution-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .institution-list li::before {
+            content: "•";
+            color: var(--color-accent);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .institution-list { columns: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <img src="img/Logo projeto.png" alt="Logo" onerror="this.style.display='none';">
+            </a>
+
+            <div class="hamburger-menu" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explorar.html">Explorar</a></li>
+                <li><a href="historico.html">Histórico</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <header style="text-align: center; margin-bottom: 50px;">
+                <h1 style="color: var(--color-gold); text-shadow: 2px 2px 4px black;">Espiritualidades Africanas</h1>
+                <p style="color: var(--color-white); font-size: 1.2em;">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+            </header>
+            
+            <div class="section-box">
+                <h2>Sobre o Grupo</h2>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum debitis repellat a enim nihil odit consectetur nobis, quod qui aperiam, quo, ipsa temporibus velit pariatur nostrum delectus animi alias dicta.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, soluta fuga quibusdam laboriosam molestiae excepturi aliquam harum dignissimos quo deleniti voluptatibus accusantium eveniet rerum consequuntur a numquam voluptatum? Pariatur, qui?
+                </p>
+            </div>
+
+            <div class="section-box">
+                <h2>Linhas de Atuação e Projetos</h2>
+                
+                <h3>1. Ciclos de Debates</h3>
+                <p>Projetos de pesquisa coletivos de média duração (2 a 3 anos) com temáticas transversais. Atualmente em fase de conclusão do ciclo "Memórias do trauma" (2023-2025) e planejamento do ciclo "Heteromodernidades africanas" (2026-2028).</p>
+
+                <h3>2. Projeto "Espiritualidades Africanas"</h3>
+                <p>Parceria interinstitucional (USP/UERJ) que visa localizar, identificar e inventariar fontes documentais relativas a práticas religiosas de origem africana no império português entre os séculos XVI e XVIII. Este projeto alimenta a base de dados pública disponibilizada neste site.</p>
+
+                <h3>3. Extensão: "História e Ficção Colaborativa"</h3>
+                <p>Oficinas de elaboração colaborativa de narrativas ficcionais com fundamentação histórica (jogos de interpretação, contação de histórias), envolvendo público externo à universidade para debater fronteiras entre história, memória e ficção.</p>
+
+                <h3>4. Grupo de Estudos "Carranca"</h3>
+                <p>Iniciativa discente para discussão de bibliografia de referência no campo dos estudos africanos e afrodiaspóricos, com foco atual em questões de gênero na história do continente africano</p>
+            </div>
+
+            <div class="section-box">
+                <div class="team-header">
+                    <h2>Coordenação</h2>
+                </div>
+                
+                <div class="leaders-grid">
+                    <div class="leader-card">
+                        <img src="img/alexandreMarcussi.enc" alt="Foto de Alexandre Marcussi" onerror="this.src='https://via.placeholder.com/140?text=AM';">
+                        <p style="font-size: 1.2em; font-weight: bold; color: var(--color-white);">Prof. Dr. Alexandre A. Marcussi</p>
+                        <p style="color: var(--color-accent);">Líder (USP)</p>
+                        <p style="font-size: 0.9em; margin-top:10px;">Doutor em História Social pela USP. Coordena o núcleo USP do projeto "Espiritualidades Africanas".</p>
+                    </div>
+                    
+                    <div class="leader-card">
+                        <img src="img/danielaCalainho.webp" alt="Foto de Daniela" onerror="this.src='https://via.placeholder.com/140?text=LH';">
+                        <p style="font-size: 1.2em; font-weight: bold; color: var(--color-white);">Prof. Dra. Daniela Buono Calainho</p>
+                        <p style="color: var(--color-accent);">Lider (UFF)</p>
+                        <p style="font-size: 0.9em; margin-top:10px;">Doutora em História UFF. Coordena o núcleo UFF do projeto "Espiritualidades Africanas".</p>
+                    </div>
+                </div>
+
+                <h3 style="text-align:center; border-top: 1px solid rgba(255,255,255,0.1); pt: 20px;">Composição da Equipe (44 Pesquisadores)</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">11</span>
+                        <span>Doutores</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">3</span>
+                        <span>Doutorandos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">12</span>
+                        <span>Mestrandos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">18</span>
+                        <span>Graduados/Graduandos</span>
+                    </div>
+                </div>
+                <p style="text-align: center; font-size: 0.8em; margin-top: 10px; opacity: 0.7;">*Dados referentes ao ano de 2025.</p>
+            </div>
+
+            <div class="section-box">
+                <h2>Instituições Envolvidas</h2>
+                <p>A equipe conta com pesquisadores atuantes em diversas instituições universitárias brasileiras e estrangeiras:</p>
+                <ul class="institution-list" style="margin-top: 15px;">
+                    <li>Universidade de São Paulo (USP) - <strong>Sede</strong></li>
+                    <li>Universidade Federal de Minas Gerais (UFMG)</li>
+                    <li>Universidade do Estado do Rio de Janeiro (UERJ)</li>
+                    <li>Universidade Federal de Viçosa (UFV)</li>
+                    <li>Universidade Federal de Sergipe (UFS)</li>
+                    <li>Universidade Save (Moçambique)</li>
+                </ul>
+            </div>
+            
+            <div class="section-box" style="text-align:center;">
+                <h2>Contato</h2>
+                <p>Para mais informações sobre os projetos, parcerias ou acesso à base de dados:</p>
+                <button id="openContactModal" class="cta-button" style="margin-top:15px;">Entrar em Contato</button>
+            </div>
+
+        </div> </main>
+    <div id="contactModal" class="modal-overlay">
+        <div class="modal-content glass-effect">
+            <span class="close-modal">&times;</span>
+            
+            <h2 style="color: var(--color-gold); text-align: center; margin-bottom: 20px;">Canais de Contato</h2>
+            
+            <div class="contact-section">
+                <h3>📧 Coordenação</h3>
+                <div class="contact-item">
+                    <strong>Prof. Dr. Alexandre A. Marcussi</strong>
+                    <a href="mailto:alexandre.marcussi@usp.br">alexandre.marcussi@usp.br</a> </div>
+                <div class="contact-item">
+                    <strong>Prof. Dra. Leila M. G. Leite Hernandez</strong>
+                    <a href="mailto:leila.hernandez@usp.br">leila.hernandez@usp.br</a> </div>
+            </div>
+
+            <div class="contact-section" style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px; margin-top: 20px;">
+                <h3>🌐 Redes Sociais</h3>
+                <div class="social-links">
+                    <a href="#" target="_blank" class="social-btn instagram">Instagram</a>
+                    <a href="#" target="_blank" class="social-btn linkedin">LinkedIn</a>
+                    <a href="#" target="_blank" class="social-btn facebook">Facebook</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Grupo de Pesquisa Itinerâncias. Vinculado ao CNPq e à Universidade de São Paulo.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

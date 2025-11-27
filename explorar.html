@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espiritualidades Africanas - Explorar</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="data/dados.js"></script> <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
+    <script src="script.js" defer></script> 
+    <script src="explorar.js" defer></script> 
+    
+    <style>
+        /* CSS Específico da Página Explorar (Mantenha o seu CSS aqui) */
+        main {
+            padding-top: 120px;
+            min-height: 100vh;
+        }
+        
+        .explore-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .explore-layout {
+            display: grid;
+            /* Responsividade: Mobile fica 1 coluna, Desktop 280px + 1fr */
+            grid-template-columns: 280px 1fr; 
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .explore-layout {
+                grid-template-columns: 1fr; /* Força empilhamento no mobile */
+            }
+        }
+
+        /* Sidebar escura */
+        .sidebar {
+            background-color: var(--bg-glass-dark);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid rgba(228, 214, 167, 0.2);
+            height: fit-content;
+        }
+
+        .filter-group {
+            margin-bottom: 25px;
+        }
+        
+        .filter-group label {
+            display: block;
+            color: var(--color-gold);
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-family: var(--font-heading);
+            font-size: 0.9em;
+        }
+
+        /* Estilo da lista de resultados */
+        #result-list {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 10px;
+        }
+        
+        .document-item {
+            padding: 8px 5px;
+            cursor: pointer;
+            border-bottom: 1px dashed rgba(255,255,255,0.05);
+            transition: background-color 0.2s, color 0.2s;
+            line-height: 1.3;
+        }
+        
+        .document-item:hover {
+            background-color: rgba(155, 41, 21, 0.2);
+            color: var(--color-white);
+        }
+        
+        .document-item.selected {
+            background-color: var(--color-accent);
+            color: var(--color-white);
+            font-weight: bold;
+        }
+        
+        .document-item strong {
+            color: var(--color-gold);
+        }
+        
+        /* Área do Mapa */
+        #map-placeholder {
+            height: 400px; 
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--color-gold);
+            z-index: 1; 
+            margin-bottom: 30px;
+        }
+        
+        /* Detalhes do Documento */
+        #document-detail {
+            background-color: var(--bg-glass-dark);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(228, 214, 167, 0.2);
+        }
+        
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <img src="img/Logo projeto.png" alt="Logo" onerror="this.style.display='none';">
+            </a>
+
+            <div class="hamburger-menu" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explorar.html">Explorar</a></li>
+                <li><a href="historico.html">Histórico</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <header class="explore-header">
+                <h1 style="color: var(--color-gold);">Base de Dados Interativa</h1>
+                <p style="opacity: 0.8;">Filtre os registros e explore a geolocalização dos documentos.</p>
+            </header>
+
+            <div class="explore-layout">
+
+                <aside class="sidebar">
+                    
+                    <div class="filter-group">
+                        <label for="search-text">Busca por Texto:</label>
+                        <input type="text" id="search-text" placeholder="Buscar no título ou resumo...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="entity-filter">Tipo de Registro:</label>
+                        <select id="entity-filter">
+                            <option value="all">Todos</option>
+                            </select>
+                    </div>
+
+                    <div id="dynamic-filters">
+                        </div>
+
+                    <button id="clear-filters-button" class="cta-button" style="width: 100%; background-color: #5A5A5A; border-color: #5A5A5A;">
+                        Limpar Filtros
+                    </button>
+                    
+                    <div style="margin-top: 30px;">
+                        <label style="color: var(--color-gold); border-bottom: 1px solid var(--color-accent); display:block; padding-bottom:5px; margin-bottom:10px;">
+                            Lista de Resultados: (<span id="results-count">0</span>)
+                        </label>
+                        <ul id="result-list">
+                            <li style="opacity: 0.7; padding: 10px;">Aguardando carregamento dos dados...</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <section class="results-area">
+                    
+                    <div id="map-placeholder">
+                        <div style="text-align: center; padding: 20px;">
+                            [Mapa Interativo]<br>
+                            Aguardando inicialização do Leaflet...
+                        </div>
+                    </div>
+                    
+                    <div id="document-detail">
+                        <h2 style="color: var(--color-accent);">Detalhes do Item</h2>
+                        <p style="opacity: 0.8; margin-top: 10px;">Selecione um item na lista à esquerda para visualizar as informações completas, transcrições e metadados.</p>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Grupo de Pesquisa Itinerâncias.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

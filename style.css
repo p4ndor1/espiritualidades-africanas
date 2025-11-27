@@ -1,0 +1,600 @@
+/* Importação de Fontes Modernas (Google Fonts) */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;600;700&display=swap');
+
+:root {
+    /* Paleta de Cores */
+    --color-dark: #1C110A;
+    --color-gold: #E4D6A7;
+    --color-accent: #9B2915;
+    --color-white: #FFFFFF;
+    
+    /* Fundos Semitransparentes para leitura sobre a imagem */
+    --bg-glass-dark: rgba(28, 17, 10, 0.85); 
+    --bg-glass-light: rgba(228, 214, 167, 0.9);
+
+    /* Fontes */
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Lato', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--color-gold); /* Texto claro padrão */
+    line-height: 1.6;
+    
+    /* Configuração da Imagem de Fundo com Filtro Escuro */
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), /* Filtro Escuro */
+        url('img/PT-TT-TSO-IL-030-0205_m0848.jpg'); /* Sua imagem */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efeito Parallax */
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-gold);
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--color-accent);
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- Navbar (Gradiente e Responsiva) --- */
+.navbar {
+    /* Gradiente de cima (preto) para baixo (transparente) */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+    padding: 20px 0;
+    position: fixed; /* Fixa no topo */
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    transition: background 0.4s ease, padding 0.4s ease;
+}
+
+/* Estado da Navbar quando se rola a página (JavaScript ativa isso) */
+.navbar.scrolled {
+    background: var(--color-dark); /* Preto sólido ao rolar */
+    padding: 10px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Ajuste do Logo */
+.navbar-logo img {
+    height: 60px; /* Tamanho do logo */
+    width: auto;
+    transition: height 0.3s;
+}
+
+.navbar.scrolled .navbar-logo img {
+    height: 50px; /* Logo diminui ligeiramente ao rolar */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    font-family: var(--font-heading);
+    font-size: 1em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+/* Efeito de sublinhado nos links */
+.nav-links a::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: var(--color-accent);
+    transition: width 0.3s;
+    margin-top: 5px;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width: 100%;
+}
+
+/* --- Elementos Globais de UI --- */
+.cta-button {
+    background-color: var(--color-accent);
+    color: var(--color-white) !important;
+    padding: 12px 25px;
+    border-radius: 4px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    border: 1px solid var(--color-accent);
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.cta-button:hover {
+    background-color: transparent;
+    color: var(--color-accent) !important;
+    border-color: var(--color-accent);
+}
+
+/* Caixas de Conteúdo (Glassmorphism Escuro) */
+.content-box {
+    background-color: var(--bg-glass-dark);
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid rgba(228, 214, 167, 0.2); /* Borda sutil dourada */
+    margin-bottom: 30px;
+    backdrop-filter: blur(5px); /* Desfoque do fundo */
+}
+
+/* --- Footer --- */
+.footer {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: var(--color-gold);
+    padding: 40px 0;
+    text-align: center;
+    margin-top: auto;
+    font-size: 0.9em;
+    border-top: 1px solid rgba(228, 214, 167, 0.3);
+}
+
+/* --- Responsividade (Mobile) --- */
+@media (max-width: 768px) {
+    .navbar .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .nav-links a {
+        font-size: 0.9em;
+    }
+
+    .hero h1 {
+        font-size: 2.5em;
+    }
+}
+
+/* style.css */
+
+/* ... (Mantenha o código existente) ... */
+
+
+/* --- Elementos de Formulário (Filtros) --- */
+
+/* Estilização base para campos de input e select */
+select, input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid var(--color-gold);
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.4); /* Fundo escuro sutil */
+    color: var(--color-white); /* Texto branco */
+    font-family: var(--font-body);
+    font-size: 1em;
+    transition: border-color 0.3s;
+    appearance: none; /* Remove estilo padrão do sistema operacional (para select) */
+}
+
+select:focus, input[type="text"]:focus {
+    border-color: var(--color-accent); /* Borda acesa ao focar */
+    outline: none;
+    box-shadow: 0 0 5px rgba(155, 41, 21, 0.5);
+}
+
+/* Para o seletor drop-down, dar um toque de seta para baixo */
+select {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23E4D6A7" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 12px;
+    padding-right: 30px; /* Mais espaço para a seta */
+}
+
+/* Cor do texto dos options dentro do select (geralmente não funciona em todos os browsers, mas é bom tentar) */
+select option {
+    background-color: var(--color-dark); /* Fundo escuro para as opções */
+    color: var(--color-gold);
+}
+
+/* Estilo para o estado 'active' do link da navbar (item 6) */
+.nav-links a.active {
+    color: var(--color-accent);
+}
+
+.nav-links a.active::after {
+    width: 100%;
+}
+/* --- Estilo das Abas de Transcrição --- */
+.tabs-container {
+    margin-top: 20px;
+    border: 1px solid var(--color-gold);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tabs-header {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid var(--color-gold);
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 15px;
+    color: var(--color-gold);
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 1em;
+    transition: all 0.3s;
+    border-right: 1px solid rgba(228, 214, 167, 0.2);
+}
+
+.tab-btn:last-child {
+    border-right: none;
+}
+
+.tab-btn:hover {
+    background-color: rgba(155, 41, 21, 0.2);
+}
+
+.tab-btn.active {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+}
+
+.tab-content {
+    display: none; /* Escondido por padrão */
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    max-height: 400px; /* Altura máxima para scroll */
+    overflow-y: auto;
+    white-space: pre-wrap; /* Mantém quebras de linha do texto */
+    font-size: 0.95em;
+    line-height: 1.6;
+}
+
+.tab-content.active {
+    display: block; /* Mostra quando ativo */
+}
+
+/* --- Ajustes de Campos de Detalhes --- */
+.detail-group {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.detail-label {
+    color: var(--color-gold);
+    font-weight: bold;
+    font-size: 0.9em;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.detail-value {
+    color: var(--color-white);
+}
+
+.detail-value a {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.detail-value a:hover {
+    text-decoration: underline;
+}
+
+/* Lista de pessoas/citados para não ficar repetindo o rótulo */
+.person-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.person-list li {
+    margin-bottom: 5px;
+    padding-left: 10px;
+    border-left: 2px solid var(--color-accent);
+}
+
+/* --- Estilos do Modal de Contato (Popup) --- */
+
+/* Fundo escuro que cobre a tela */
+.modal-overlay {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    z-index: 1000; /* Fica acima de tudo */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo preto bem opaco */
+    backdrop-filter: blur(5px); /* Desfoque no fundo */
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* A caixa do modal */
+.modal-content {
+    background-color: var(--bg-glass-dark); /* Usa a variável do seu tema */
+    border: 1px solid var(--color-gold);
+    border-radius: 12px;
+    padding: 40px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+/* Quando o modal está ativo (via JS) */
+.modal-overlay.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-overlay.show .modal-content {
+    transform: translateY(0);
+}
+
+/* Botão de fechar (X) */
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: var(--color-gold);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: var(--color-accent);
+}
+
+/* Estilos internos do contato */
+.contact-section h3 {
+    color: var(--color-white);
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    border-left: 3px solid var(--color-accent);
+    padding-left: 10px;
+}
+
+.contact-item {
+    margin-bottom: 15px;
+}
+
+.contact-item strong {
+    display: block;
+    color: var(--color-gold);
+    font-size: 0.95em;
+}
+
+.contact-item a {
+    color: var(--color-white);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.contact-item a:hover {
+    opacity: 1;
+    text-decoration: underline;
+    color: var(--color-accent);
+}
+
+/* Botões de Redes Sociais */
+.social-links {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.social-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: transform 0.2s, filter 0.2s;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.social-btn:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.2);
+}
+
+/* Cores específicas (opcional) */
+.social-btn.instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%); }
+.social-btn.linkedin { background-color: #0077b5; }
+.social-btn.facebook { background-color: #3b5998; }
+
+/* Responsividade do Modal */
+@media (max-width: 500px) {
+    .modal-content {
+        padding: 25px;
+        width: 95%;
+    }
+}
+/* --- ESTILOS DA NAVBAR RESPONSIVA --- */
+
+/* Ajuste do Container da Navbar */
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+/* Estilo do Botão Hambúrguer (Escondido no Desktop) */
+.hamburger-menu {
+    display: none;
+    cursor: pointer;
+}
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--color-gold);
+}
+
+/* --- RESPONSIVIDADE (Mobile) --- */
+
+/* --- RESPONSIVIDADE (Mobile Refinado) --- */
+@media (max-width: 768px) {
+    
+    /* 1. Ajuste do Corpo Principal */
+    main {
+        /* Espaço menor no topo, já que a barra será mais fina */
+        padding-top: 90px !important; 
+    }
+
+   /* 2. Navbar Fina e Transparente (Vidro) */
+    .navbar {
+        /* Gradiente mais suave (de 0.9 para 0.7) para o vidro funcionar */
+        background: linear-gradient(to bottom, rgba(28, 17, 10, 0.9), rgba(28, 17, 10, 0.7));
+        backdrop-filter: blur(12px); /* Aumentei o desfoque para ficar mais bonito */
+        -webkit-backdrop-filter: blur(12px);
+        height: 70px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgba(228, 214, 167, 0.1); /* Borda bem sutil */
+    }
+
+    .navbar-container {
+        /* Isso é o segredo: ROW deixa um do lado do outro */
+        flex-direction: row !important; 
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100%;
+        padding: 0 20px; /* Espaçamento lateral */
+    }
+
+    /* 3. Logo Pequeno */
+    .navbar-logo img {
+        height: 40px !important; /* Força o logo a ficar pequeno */
+        width: auto !important;
+        display: block !important; /* Garante que aparece */
+    }
+
+    /* 4. Botão Hambúrguer (Risquinhos) */
+    .hamburger-menu {
+        display: block;
+        z-index: 1002;
+        margin: 0; /* Remove margens estranhas */
+    }
+
+    /* 5. Menu Dropdown (A caixa que desce) */
+    .nav-links {
+        position: fixed;
+        left: 0;
+        top: 70px; /* Tem que ser igual à altura da navbar */
+        width: 100%;
+        background-color: rgba(28, 17, 10, 0.98); /* Fundo escuro sólido */
+        border-bottom: 1px solid var(--color-gold);
+        flex-direction: column;
+        align-items: center;
+        padding: 30px 0;
+        gap: 25px;
+        
+        /* Animação de deslizar */
+        transform: translateY(-150%);
+        transition: transform 0.4s ease-in-out;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+
+    /* Quando o menu está aberto */
+    .nav-links.active {
+        transform: translateY(0); /* Desliza para a tela */
+        left: 0; /* Garante que não fique desalinhado */
+    }
+
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+        margin: 0;
+    }
+
+    .nav-links a {
+        font-size: 1.2em;
+        display: block;
+        padding: 10px;
+    }
+
+    /* 6. Animação do X no Hambúrguer */
+    .hamburger-menu.active .bar:nth-child(2) { opacity: 0; }
+    .hamburger-menu.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger-menu.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* 7. Ajustes de Layout das Páginas (Grid) */
+    .explore-layout, 
+    .articles-grid, 
+    .stats-grid, 
+    .leaders-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Título da Home no Celular */
+    .hero h1 {
+        font-size: 2.2em;
+        line-height: 1.2;
+    }
+    
+    /* Ajuste do Modal no celular */
+    .modal-content {
+        width: 90%;
+        margin-top: 0;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}
