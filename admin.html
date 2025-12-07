@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - Itinerâncias</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS Específico do Admin */
+        body { background-color: #0f0a05; } /* Fundo mais escuro */
+        main { padding-top: 100px; display: flex; justify-content: center; min-height: 100vh; }
+
+        /* Tela de Login */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 80vh;
+        }
+
+        .login-box {
+            background: var(--bg-glass-dark);
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid var(--color-gold);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-box input { margin-bottom: 20px; text-align: center; }
+
+        /* Painel Principal (Escondido inicialmente) */
+        #admin-panel { display: none; width: 100%; max-width: 900px; }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--color-accent);
+            padding-bottom: 20px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media(max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+        /* Card de Upload */
+        .upload-area {
+            border: 2px dashed var(--color-gold);
+            padding: 40px;
+            text-align: center;
+            border-radius: 8px;
+            transition: 0.3s;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+
+        .upload-area:hover { background: rgba(255,255,255,0.1); border-color: var(--color-white); }
+
+        /* Histórico */
+        .history-list { list-style: none; margin-top: 20px; }
+        .history-item {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-left: 3px solid var(--color-accent);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <h2 style="color: var(--color-gold); margin-bottom: 20px;">Acesso Restrito</h2>
+            <p style="margin-bottom: 20px;">Área exclusiva para pesquisadores.</p>
+            <input type="password" id="admin-pass" placeholder="Senha de Acesso">
+            <button onclick="checkLogin()" class="cta-button">Entrar</button>
+            <p id="login-msg" style="color: red; margin-top: 10px; font-size: 0.9em;"></p>
+        </div>
+    </div>
+
+    <main id="admin-panel">
+        <div class="container">
+            <div class="admin-header">
+                <h1 style="color: var(--color-white);">Painel de Controle</h1>
+                <button onclick="logout()" style="background:none; border:1px solid var(--color-gold); color:var(--color-gold); padding:5px 15px; cursor:pointer;">Sair</button>
+            </div>
+
+            <div class="dashboard-grid">
+                
+                <div class="content-box">
+                    <h2 style="color: var(--color-accent); margin-bottom: 20px;">Atualizar Base de Dados</h2>
+                    <p style="margin-bottom: 20px; font-size: 0.9em;">Envie o arquivo <code>dados.js</code> ou <code>.json</code> exportado do Heurist.</p>
+                    
+                    <div class="upload-area" id="drop-zone">
+                        <span style="font-size: 3em;">📂</span>
+                        <p>Arraste o arquivo aqui ou clique para selecionar</p>
+                        <input type="file" id="file-input" style="display: none;" accept=".js,.json">
+                    </div>
+                    
+                    <div id="upload-status" style="margin-top: 20px; text-align: center; color: var(--color-gold);"></div>
+                </div>
+
+                <div class="content-box">
+                    <h2 style="color: var(--color-gold); margin-bottom: 20px;">Histórico de Atualizações</h2>
+                    <p style="font-size: 0.9em; opacity: 0.7;">Últimas 3 modificações realizadas no sistema.</p>
+                    
+                    <ul class="history-list" id="history-container">
+                        <li style="opacity: 0.5; padding: 10px;">Nenhum registro encontrado.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- 1. Lógica de Autenticação (Simples) ---
+        const CORRECT_PASS = "itinerancias2025"; // Defina a senha aqui
+
+        function checkLogin() {
+            const pass = document.getElementById('admin-pass').value;
+            if (pass === CORRECT_PASS) {
+                // Salva na sessão que o usuário está logado
+                sessionStorage.setItem('isLogged', 'true');
+                showPanel();
+            } else {
+                document.getElementById('login-msg').textContent = "Senha incorreta.";
+            }
+        }
+
+        function showPanel() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'flex';
+            loadHistory();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('isLogged');
+            location.reload();
+        }
+
+        // Verifica se já estava logado ao recarregar a página
+        if (sessionStorage.getItem('isLogged') === 'true') {
+            showPanel();
+        }
+
+        // --- 2. Lógica de Upload (Simulação Visual) ---
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', handleFile);
+
+        function handleFile(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        function processFile(file) {
+            const status = document.getElementById('upload-status');
+            status.innerHTML = "Lendo arquivo...";
+
+            // Simula um tempo de upload
+            setTimeout(() => {
+                const userName = prompt("Para registrar esta alteração, digite seu nome:", "Pesquisador");
+                
+                if(userName) {
+                    saveHistory(userName, file.name);
+                    status.innerHTML = `<strong style="color: #4CAF50;">Sucesso!</strong> O arquivo <em>${file.name}</em> foi processado.<br><small>(Lembre-se: em um site estático, você precisa commitar este arquivo no GitHub para valer)</small>`;
+                    loadHistory();
+                } else {
+                    status.innerHTML = "Ação cancelada.";
+                }
+            }, 1000);
+        }
+
+        // --- 3. Lógica de Histórico (LocalStorage) ---
+        function saveHistory(user, filename) {
+            let history = JSON.parse(localStorage.getItem('updateHistory') || '[]');
+            
+            const newEntry = {
+                user: user,
+                file: filename,
+                date: new Date().toLocaleString('pt-BR')
+            };
+
+            // Adiciona no topo e mantém apenas os 3 últimos
+            history.unshift(newEntry);
+            if (history.length > 3) history.pop();
+
+            localStorage.setItem('updateHistory', JSON.stringify(history));
+        }
+
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('updateHistory') || '[]');
+            const container = document.getElementById('history-container');
+            
+            container.innerHTML = '';
+
+            if (history.length === 0) {
+                container.innerHTML = '<li style="opacity: 0.5; padding: 10px;">Nenhum registro recente.</li>';
+                return;
+            }
+
+            history.forEach(item => {
+                container.innerHTML += `
+                    <li class="history-item">
+                        <div>
+                            <strong>${item.user}</strong><br>
+                            <span style="font-size: 0.8em; opacity: 0.8;">Arquivo: ${item.file}</span>
+                        </div>
+                        <div style="text-align: right; font-size: 0.8em; color: var(--color-gold);">
+                            ${item.date}
+                        </div>
+                    </li>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
