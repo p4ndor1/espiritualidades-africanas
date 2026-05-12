@@ -99,44 +99,47 @@
                 </section>
             </div>
 
-            <!-- SEÇÃO COMO USAR -->
             <section id="como-usar" style="margin-top: 60px; border-top: 1px solid rgba(28,17,10,0.1); padding-top: 40px; margin-bottom: 40px;">
                 <div class="content-box" style="border-left: 5px solid var(--color-accent); background-color: rgba(228, 214, 167, 0.4);">
-                    <h2 style="color: var(--color-accent); margin-bottom: 20px;">Como usar os filtros de pesquisa</h2>
-                    <p style="margin-bottom: 25px; text-align: justify;">Nossa base de dados foi desenhada para permitir cruzamentos complexos entre documentos e trajetórias de vida. Abaixo, detalhamos como cada filtro funciona para otimizar sua pesquisa:</p>
+                    <h2 style="color: var(--color-accent); margin-bottom: 20px;">Como usar os filtros e o mapa</h2>
+                    <p style="margin-bottom: 25px; text-align: justify;">Nossa base de dados foi desenhada para permitir cruzamentos complexos entre documentos e trajetórias de vida. Abaixo, detalhamos as funcionalidades para otimizar sua pesquisa:</p>
                     
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
                         <div class="how-to-item">
                             <strong style="color: var(--color-accent); display: block; margin-bottom: 5px;">1. Busca por texto:</strong>
-                            <p style="font-size: 0.9em; text-align: justify;">Busca global em toda a base. Pesquisa palavras-chave no título, resumos e no conteúdo integral das <strong>transcrições paleográficas</strong>, considerando tanto a grafia original quanto a modernizada.</p>
+                            <p style="font-size: 0.9em; text-align: justify;">Pesquisa palavras-chave no título, resumos e no conteúdo integral das <strong>transcrições paleográficas</strong>.</p>
                         </div>
                         <div class="how-to-item">
                             <strong style="color: var(--color-accent); display: block; margin-bottom: 5px;">2. Tipo de registro:</strong>
-                            <p style="font-size: 0.9em; text-align: justify;">Define o escopo da lista. Selecione <strong>Documentos</strong> para visualizar registros inquisitoriais ou <strong>Pessoas</strong> para encontrar indivíduos citados nas fontes.</p>
+                            <p style="font-size: 0.9em; text-align: justify;">Selecione <strong>Documentos</strong> para registros inquisitoriais ou <strong>Pessoas</strong> para indivíduos citados.</p>
                         </div>
                         <div class="how-to-item">
                             <strong style="color: var(--color-accent); display: block; margin-bottom: 5px;">3. Papel:</strong>
-                            <p style="font-size: 0.9em; text-align: justify;">Exclusivo para o registro de pessoas. Permite isolar categorias específicas, como <strong>Acusado(a)</strong>, Testemunha, Denunciante ou Autoridade.</p>
+                            <p style="font-size: 0.9em; text-align: justify;">Exclusivo para Pessoas. Isola categorias como <strong>Acusado(a)</strong>, Testemunha ou Denunciante.</p>
                         </div>
                         <div class="how-to-item">
                             <strong style="color: var(--color-accent); display: block; margin-bottom: 5px;">4. Tipo de prática:</strong>
-                            <p style="font-size: 0.9em; text-align: justify;">Filtra pela natureza da atividade espiritual ou ritualística mencionada na documentação (ex: devoções africanas, catolicismo popular).</p>
+                            <p style="font-size: 0.9em; text-align: justify;">Filtra pela natureza da atividade espiritual mencionada na documentação.</p>
                         </div>
                         <div class="how-to-item">
                             <strong style="color: var(--color-accent); display: block; margin-bottom: 5px;">5. Ano (Intervalo):</strong>
-                            <p style="font-size: 0.9em; text-align: justify;">Filtra os registros por um período cronológico. Insira o ano de início e fim para delimitar o tempo da produção documental ou da ocorrência.</p>
+                            <p style="font-size: 0.9em; text-align: justify;">Delimita o tempo da produção documental ou da ocorrência.</p>
                         </div>
                         <div class="how-to-item">
                             <strong style="color: var(--color-accent); display: block; margin-bottom: 5px;">6. Condição jurídica:</strong>
-                            <p style="font-size: 0.9em; text-align: justify;">Refere-se ao status legal dos indivíduos no período colonial (ex: Escravizado, Forro, Livre).</p>
+                            <p style="font-size: 0.9em; text-align: justify;">Refere-se ao status legal dos indivíduos (ex: Escravizado, Forro, Livre).</p>
                         </div>
                         <div class="how-to-item">
                             <strong style="color: var(--color-accent); display: block; margin-bottom: 5px;">7. Qualidade ou cor:</strong>
-                            <p style="font-size: 0.9em; text-align: justify;">Categorias fenotípicas ou sociais atribuídas aos sujeitos nos documentos históricos (ex: Preto, Pardo, Mestiço).</p>
+                            <p style="font-size: 0.9em; text-align: justify;">Categorias fenotípicas atribuídas aos sujeitos nos documentos históricos.</p>
                         </div>
                         <div class="how-to-item">
                             <strong style="color: var(--color-accent); display: block; margin-bottom: 5px;">8. Nação:</strong>
-                            <p style="font-size: 0.9em; text-align: justify;">Refere-se à origem étnica, regional ou "nação" africana declarada ou atribuída ao indivíduo (ex: Angola, Mina, Rebolo).</p>
+                            <p style="font-size: 0.9em; text-align: justify;">Refere-se à origem étnica ou regional declarada (ex: Angola, Mina, Rebolo).</p>
+                        </div>
+                        <div class="how-to-item" style="grid-column: span 1; background: rgba(28, 17, 10, 0.05); padding: 10px; border-radius: 4px;">
+                            <strong style="color: var(--color-accent); display: block; margin-bottom: 5px;">9. Mapa Interativo:</strong>
+                            <p style="font-size: 0.9em; text-align: justify;">Os <strong>círculos com números</strong> indicam que há vários registros naquela região; clique neles para aproximar. Ao clicar em um <strong>marcador individual</strong>, você verá o título e um botão para abrir os detalhes completos do item logo abaixo.</p>
                         </div>
                     </div>
                 </div>
