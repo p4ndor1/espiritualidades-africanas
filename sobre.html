@@ -3,286 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Espiritualidades Africanas - Sobre o Grupo</title>
+    <title>Espiritualidades Africanas - O Projeto</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
     <style>
-        main{padding-top: 125px;}
-        .intro-text {
-            font-size: 1.1em;
-            margin-bottom: 40px;
-            text-align: justify;
-            color: var(--color-gold);
-        }
-
+        main { padding-top: 125px; }
         .section-box {
-            background-color: var(--bg-glass-dark);
-            padding: 40px;
-            border-radius: 8px;
-            margin-bottom: 40px;
-            border: 1px solid rgba(228, 214, 167, 0.2);
-            border-left: 5px solid var(--color-accent);
+            background-color: var(--bg-glass-light); padding: 40px; border-radius: 8px; margin-bottom: 40px;
+            border: 1px solid rgba(28, 17, 10, 0.15); border-left: 5px solid var(--color-accent);
         }
-
         .section-box h2 {
-            color: var(--color-gold);
-            border-bottom: 1px solid var(--color-accent);
-            display: inline-block;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-family: var(--font-heading);
+            border-bottom: 1px solid var(--color-accent); display: inline-block; padding-bottom: 10px; margin-bottom: 20px;
         }
-        
-        .section-box h3 {
-            color: var(--color-white);
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
-
-        .section-box p {
-            margin-bottom: 15px;
-            opacity: 0.9;
-        }
-
-        .team-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .leaders-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .leader-card {
-            text-align: center;
-            padding: 30px;
-            background: rgba(0,0,0,0.4);
-            border-radius: 8px;
-            border: 1px solid var(--color-gold);
-            transition: transform 0.3s;
-        }
-
-        .leader-card:hover {
-            transform: translateY(-5px);
-            background: rgba(155, 41, 21, 0.1);
-        }
-
+        .section-box p { text-align: justify; margin-bottom: 15px; }
+        .leaders-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
         .leader-card img {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 15px;
-            border: 3px solid var(--color-accent);
-        }
+    width: 120px; /* Tamanho reduzido para encaixar melhor */
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover; /* Garante que a foto não estique */
+    margin: 0 auto 15px auto; /* Centraliza a foto no card */
+    display: block;
+    border: 3px solid var(--color-accent);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .stat-item {
-            background: rgba(228, 214, 167, 0.1);
-            padding: 15px;
-            border-radius: 5px;
-        }
-
-        .stat-number {
-            display: block;
-            font-size: 2em;
-            font-weight: bold;
-            color: var(--color-accent);
-        }
-
-        .institution-list {
-            columns: 2;
-            list-style: none;
-        }
-
-        .institution-list li {
-            margin-bottom: 10px;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .institution-list li::before {
-            content: "•";
-            color: var(--color-accent);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        @media (max-width: 768px) {
-            .institution-list { columns: 1; }
-        }
+.leader-card {
+    text-align: center;
+    padding: 25px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 8px;
+    border: 1px solid rgba(28, 17, 10, 0.2);
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Garante que os cards tenham a mesma altura */
+}
+        .leader-card:hover { transform: translateY(-5px); border-color: var(--color-accent); }
     </style>
 </head>
 <body>
-
     <nav class="navbar">
         <div class="container navbar-container">
             <a href="index.html" class="navbar-logo">
                 <img src="img/Logo projeto.png" alt="Logo" onerror="this.style.display='none';">
             </a>
-
             <div class="hamburger-menu" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
             </div>
-            
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="explorar.html">Explorar</a></li>
-                <li><a href="historico.html">Histórico</a></li>
-                <li><a href="sobre.html">Sobre</a></li>
-                <li><a href="biblioteca.html">Biblioteca</a></li>
-            </ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="explorar.html">Explorar</a></li>
+    <li><a href="sobre.html">O Projeto</a></li>
+    <li><a href="biblioteca.html">Biblioteca</a></li>
+</ul>
         </div>
     </nav>
 
     <main>
         <div class="container">
             <header style="text-align: center; margin-bottom: 50px;">
-                <h1 style="color: var(--color-gold); text-shadow: 2px 2px 4px black;">Espiritualidades Africanas</h1>
-                <p style="color: var(--color-white); font-size: 1.2em;">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+                <h1>O Projeto</h1>
             </header>
             
             <div class="section-box">
-                <h2>Sobre o Grupo</h2>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum debitis repellat a enim nihil odit consectetur nobis, quod qui aperiam, quo, ipsa temporibus velit pariatur nostrum delectus animi alias dicta.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, soluta fuga quibusdam laboriosam molestiae excepturi aliquam harum dignissimos quo deleniti voluptatibus accusantium eveniet rerum consequuntur a numquam voluptatum? Pariatur, qui?
-                </p>
+                <h2>Histórico do Projeto</h2>
+                <p>Esta base de dados está em processo de construção no âmbito do projeto de pesquisa “Espiritualidades africanas: práticas religiosas de origem africana no Império Português (séculos XVI-XVIII)”, coordenado pelo Prof. Dr. Alexandre Marcussi na Universidade de São Paulo, e do Núcleo de Estudos Inquisitoriais, coordenado pela Prof.ª Dr.ª Daniela Calainho na Universidade do Estado do Rio de Janeiro.</p>
+                <p>O projeto se iniciou em 2021, na Universidade Federal de Minas Gerais, com coordenação do Prof. Dr. Alexandre Marcussi e com o objetivo inicial de realizar um levantamento e indexação de fontes documentais que se referiam a práticas religiosas de origem africana nos Cadernos do Promotor da Inquisição portuguesa. Os Cadernos do Promotor são códices arquivísticos do fundo da Inquisição portuguesa, custodiados no Arquivo Nacional da Torre do Tombo, em Lisboa, que reúnem denúncias que foram arquivadas pelos tribunais inquisitoriais e que não deram origem a processos judiciais completos. Embora se estime que os Cadernos do Promotor contenham mais de 90% de todos os documentos inquisitoriais referentes a práticas religiosas de origem africana, eles nunca foram sistematicamente inventariados.</p>
+                <p>A primeira etapa do projeto, finalizada em 2022, consistiu em um inventário, a partir dos índices manuscritos disponíveis para os Cadernos do Promotor, de todos os acusados de origem africana e indígena, quaisquer que fossem os delitos (totalizando 1.063 indivíduos), bem como de todos os acusados de crimes de “feitiçaria”, independentemente de sua origem (totalizando 3.383 indivíduos). A partir daí, a pesquisa prosseguiu para a localização, transcrição e análise dos documentos correspondentes para a construção da base de dados.</p>
+                <p>Em 2023, foi estabelecida a parceria com um projeto do Núcleo de Estudos Inquisitoriais da UERJ coordenado pela Prof.ª Dr.ª Daniela Calainho, que visava compor uma base de dados contendo informações sobre os acusados de origem africana na Inquisição portuguesa, reunindo fontes já localizadas e analisadas pela historiografia que incluíam os Cadernos do Promotor, mas também outras tipologias documentais (como as visitações inquisitoriais e os processos). A partir dessa parceria e da ampliação do escopo e dos objetivos, a equipe optou por construir e disponibilizar publicamente a base de dados empregando as ferramentas da plataforma Heurist. O processo de construção da arquitetura da base de dados foi finalizado em 2024.</p>
+                <p>Em 2025, o projeto ampliou-se com parcerias com a Universidade Federal de Minas Gerais (com o Prof. Dr. David Barbuda), a Universidade Federal de Viçosa (com o Prof. Dr. Angelo Assis) e a Universidade Federal de Sergipe (com a Prof.ª Dr.ª Mariana Fonseca). Atualmente, a equipe conta com 24 pesquisadores e pesquisadoras, em nível de Graduação e Mestrado.</p>
+                <p>O projeto de pesquisa “Espiritualidades africanas” faz parte do Grupo de Pesquisa do CNPq “Itinerâncias: a circulação de atores e saberes e os poderes e resistências em África” (<a href="http://dgp.cnpq.br/dgp/espelhogrupo/1668892201635830" target="_blank" style="color:var(--color-accent); font-weight:bold;">Acessar espelho do grupo</a>), sediado na Universidade de São Paulo e liderado pelo Prof. Dr. Alexandre Marcussi e pela Prof.ª Dr.ª Leila Hernandez.</p>
             </div>
 
             <div class="section-box">
-                <h2>Linhas de Atuação e Projetos</h2>
-                
-                <h3>1. Ciclos de Debates</h3>
-                <p>Projetos de pesquisa coletivos de média duração (2 a 3 anos) com temáticas transversais. Atualmente em fase de conclusão do ciclo "Memórias do trauma" (2023-2025) e planejamento do ciclo "Heteromodernidades africanas" (2026-2028).</p>
-
-                <h3>2. Projeto "Espiritualidades Africanas"</h3>
-                <p>Parceria interinstitucional (USP/UERJ) que visa localizar, identificar e inventariar fontes documentais relativas a práticas religiosas de origem africana no império português entre os séculos XVI e XVIII. Este projeto alimenta a base de dados pública disponibilizada neste site.</p>
-
-                <h3>3. Extensão: "História e Ficção Colaborativa"</h3>
-                <p>Oficinas de elaboração colaborativa de narrativas ficcionais com fundamentação histórica (jogos de interpretação, contação de histórias), envolvendo público externo à universidade para debater fronteiras entre história, memória e ficção.</p>
-
-                <h3>4. Grupo de Estudos "Carranca"</h3>
-                <p>Iniciativa discente para discussão de bibliografia de referência no campo dos estudos africanos e afrodiaspóricos, com foco atual em questões de gênero na história do continente africano</p>
-            </div>
-
-            <div class="section-box">
-                <div class="team-header">
+                <div style="text-align: center; margin-bottom: 30px;">
                     <h2>Coordenação</h2>
                 </div>
-                
                 <div class="leaders-grid">
                     <div class="leader-card">
                         <img src="img/alexandreMarcussi.enc" alt="Foto de Alexandre Marcussi" onerror="this.src='https://via.placeholder.com/140?text=AM';">
-                        <p style="font-size: 1.2em; font-weight: bold; color: var(--color-white);">Prof. Dr. Alexandre A. Marcussi</p>
-                        <p style="color: var(--color-accent);">Coordenador(USP)</p>
-                        <p style="font-size: 0.9em; margin-top:10px;">Doutor em História Social pela USP. Coordena o núcleo USP do projeto "Espiritualidades Africanas".</p>
+                        <p style="font-size: 1.2em; font-weight: bold;">Prof. Dr. Alexandre A. Marcussi (USP)</p>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Professor do Departamento de História da USP, na área de História da África. Doutor em História Social pela USP (2015). Seus temas de pesquisa incluem religiosidades africanas em Angola e no Brasil, história cultural da escravidão e história do pensamento negro.</p>
+                        <a href="http://lattes.cnpq.br/2823588004623625" target="_blank" class="cta-button" style="margin-top:15px; padding: 8px 15px; font-size: 0.8em;">Currículo Lattes</a>
                     </div>
-                    
                     <div class="leader-card">
                         <img src="img/danielaCalainho.webp" alt="Foto de Daniela" onerror="this.src='https://via.placeholder.com/140?text=LH';">
-                        <p style="font-size: 1.2em; font-weight: bold; color: var(--color-white);">Prof. Dra. Daniela Buono Calainho</p>
-                        <p style="color: var(--color-accent);">Coordenadora (UERJ)</p>
-                        <p style="font-size: 0.9em; margin-top:10px;">Doutora em História pela UFF. Coordena o núcleo UFF do projeto "Espiritualidades Africanas".</p>
+                        <p style="font-size: 1.2em; font-weight: bold;">Prof.ª Dr.ª Daniela B. Calainho (UERJ)</p>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Professora da Faculdade de Formação de Professores da UERJ. Doutora em História pela UFF (2010). Seus temas de pesquisa incluem religiosidades de origem africana em Portugal, história da Inquisição portuguesa e história da medicina luso-brasileira.</p>
+                        <a href="http://lattes.cnpq.br/2666311687962975" target="_blank" class="cta-button" style="margin-top:15px; padding: 8px 15px; font-size: 0.8em;">Currículo Lattes</a>
                     </div>
                 </div>
-
-                <h3 style="text-align:center; border-top: 1px solid rgba(255,255,255,0.1); pt: 20px;">Composição da Equipe (44 Pesquisadores)</h3>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <span class="stat-number">11</span>
-                        <span>Doutores</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">3</span>
-                        <span>Doutorandos</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">12</span>
-                        <span>Mestrandos</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">18</span>
-                        <span>Graduados/Graduandos</span>
-                    </div>
-                </div>
-                <p style="text-align: center; font-size: 0.8em; margin-top: 10px; opacity: 0.7;">*Dados referentes ao ano de 2025.</p>
-            </div>
-
-            <div class="section-box">
-                <h2>Instituições Envolvidas</h2>
-                <p>A equipe conta com pesquisadores atuantes em diversas instituições universitárias brasileiras e estrangeiras:</p>
-                <ul class="institution-list" style="margin-top: 15px;">
-                    <li>Universidade de São Paulo (USP) - <strong>Sede</strong></li>
-                    <li>Universidade Federal de Minas Gerais (UFMG)</li>
-                    <li>Universidade do Estado do Rio de Janeiro (UERJ)</li>
-                    <li>Universidade Federal de Viçosa (UFV)</li>
-                    <li>Universidade Federal de Sergipe (UFS)</li>
-                    <li>Universidade Save (Moçambique)</li>
-                </ul>
             </div>
             
             <div class="section-box" style="text-align:center;">
-                <h2>Contato</h2>
-                <p>Para mais informações sobre os projetos, parcerias ou acesso à base de dados:</p>
-                <button id="openContactModal" class="cta-button" style="margin-top:15px;">Entrar em Contato</button>
+                <h2>Plataforma Heurist</h2>
+                <p>A nossa base de dados foi estruturada utilizando a plataforma Heurist, permitindo relacionar documentos inquisitoriais e locais geográficos de forma dinâmica.</p>
+                <a href="https://heurist.huma-num.fr/" target="_blank" class="cta-button" style="margin-top: 15px;">Aceder à Plataforma Heurist</a>
             </div>
 
-        </div> </main>
-    <div id="contactModal" class="modal-overlay">
-        <div class="modal-content glass-effect">
-            <span class="close-modal">&times;</span>
-            
-            <h2 style="color: var(--color-gold); text-align: center; margin-bottom: 20px;">Canais de Contato</h2>
-            
-            <div class="contact-section">
-                <h3>📧 Coordenação</h3>
-                <div class="contact-item">
-                    <strong>Prof. Dr. Alexandre A. Marcussi</strong>
-                    <a href="mailto:alexandre.marcussi@usp.br">alexandre.marcussi@usp.br</a> </div>
-                <div class="contact-item">
-                    <strong>Prof. Dra. Daniela Buono Calainho</strong>
-                    <a href="mailto:lcalainho@gmail.com">calainho@gmail.com</a> </div>
+            <div class="section-box" style="text-align:center; border-left: 5px solid var(--color-dark);">
+                <h2>Participe do Projeto</h2>
+                <p>Caso você seja pesquisador(a) envolvido(a) com a temática e tenha interesse em contribuir com a equipe de pesquisa deste projeto, entre em contato.</p>
+                <a href="mailto:alexandremarcussi@usp.br" class="cta-button" style="margin-top:15px; background-color: var(--color-dark); border-color: var(--color-dark);">E-mail: alexandremarcussi@usp.br</a>
             </div>
-
-            <div class="contact-section" style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px; margin-top: 20px;">
-                <h3>🌐 Redes Sociais</h3>
-                <div class="social-links">
-                    <a href="#" target="_blank" class="social-btn instagram">Instagram</a>
-                    <a href="#" target="_blank" class="social-btn linkedin">LinkedIn</a>
-                    <a href="#" target="_blank" class="social-btn facebook">Facebook</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</body>
-</html>
-
-        </div>
+        </div> 
     </main>
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Grupo de Pesquisa Itinerâncias. Vinculado ao CNPq e à Universidade de São Paulo.</p>
+            <p>&copy; 2025 Projeto Espiritualidades Africanas.</p>
         </div>
     </footer>
-
 </body>
 </html>

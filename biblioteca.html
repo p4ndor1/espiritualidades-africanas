@@ -7,63 +7,36 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
     <style>
-        /* Estilos Específicos para a página de Construção */
         main { padding-top: 120px; min-height: 80vh; display: flex; align-items: center; justify-content: center; }
-        
         .construction-box {
-            background-color: var(--bg-glass-dark);
-            padding: 50px;
-            border-radius: 12px;
-            border: 1px solid var(--color-gold);
-            text-align: center;
-            max-width: 600px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
+            background-color: var(--bg-glass-light); padding: 50px; border-radius: 12px;
+            border: 1px solid rgba(28, 17, 10, 0.2); text-align: center; max-width: 600px;
         }
-
         .icon-build { font-size: 4em; color: var(--color-accent); margin-bottom: 20px; display: block; }
-        
-        .construction-box h1 { color: var(--color-gold); margin-bottom: 15px; }
-        .construction-box p { font-size: 1.1em; margin-bottom: 30px; opacity: 0.9; }
     </style>
 </head>
 <body>
-
     <nav class="navbar">
         <div class="container navbar-container">
-            <a href="index.html" class="navbar-logo">
-                <img src="img/Logo projeto.png" alt="Logo" onerror="this.style.display='none';">
-            </a>
-            <div class="hamburger-menu" id="mobile-menu">
-                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-            </div>
+            <a href="index.html" class="navbar-logo"><img src="img/Logo projeto.png" alt="Logo" onerror="this.style.display='none';"></a>
+            <div class="hamburger-menu" id="mobile-menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="explorar.html">Explorar</a></li>
-                <li><a href="historico.html">Histórico</a></li>
-                <li><a href="biblioteca.html">Biblioteca</a></li> <li><a href="sobre.html">Sobre</a></li>
-            </ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="explorar.html">Explorar</a></li>
+    <li><a href="sobre.html">O Projeto</a></li>
+    <li><a href="biblioteca.html">Biblioteca</a></li>
+</ul>
         </div>
     </nav>
-
     <main>
         <div class="container" style="display:flex; justify-content:center;">
             <div class="construction-box">
                 <span class="icon-build">🚧</span>
                 <h1>Biblioteca em Construção</h1>
-                <p>
-                    Estamos a organizar as produções do grupo de pesquisa e materiais paradidáticos.
-                    <br>Em breve, este espaço será um repositório de conhecimento aberto.
-                </p>
+                <p>Em breve, este espaço será um repositório de conhecimento aberto.</p>
                 <a href="index.html" class="cta-button">Voltar para o Início</a>
             </div>
         </div>
     </main>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Grupo de Pesquisa Itinerâncias.</p>
-        </div>
-    </footer>
 </body>
 </html>

@@ -1,11 +1,10 @@
-// explorar.js - Versão Final: Busca em Transcrições, Filtros Dinâmicos e Datas Corrigidas
+// explorar.js - Vínculos Dinâmicos e Nova Ordem de Filtros
 
 let fullData = {};
 let filteredRecords = [];
 let map = null;
 let markersCluster = null;
 
-// Elementos do DOM
 const recordsContainer = document.getElementById('result-list');
 const detailContainer = document.getElementById('document-detail');
 const dynamicFiltersContainer = document.getElementById('dynamic-filters');
@@ -13,7 +12,6 @@ const entityFilter = document.getElementById('entity-filter');
 const searchInput = document.getElementById('search-text');
 const resultsCountSpan = document.getElementById('results-count');
 
-// --- Inicialização ---
 const initPage = () => {
     try {
         if (typeof dbData === 'undefined') throw new Error("Variável 'dbData' não encontrada.");
@@ -22,19 +20,16 @@ const initPage = () => {
         setupEventListeners();
         initMap();
         populateEntityFilter();
-        generateDynamicFilters(); // Gera os filtros iniciais
-        applyFilters(); // Carrega a lista inicial
-
+        generateDynamicFilters();
+        applyFilters();
     } catch (error) {
-        console.error("Erro:", error);
-        recordsContainer.innerHTML = `<li style="color:red; padding:10px;">Erro: ${error.message}</li>`;
+        recordsContainer.innerHTML = `<li style="color:var(--color-accent); padding:10px;">Erro: ${error.message}</li>`;
     }
 };
 
-// --- Mapa (Dark Mode) ---
 const initMap = () => {
     map = L.map('map-placeholder').setView([20, 0], 3);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap &copy; CARTO',
         maxZoom: 19
     }).addTo(map);
@@ -43,7 +38,7 @@ const initMap = () => {
         iconCreateFunction: function(cluster) {
             const count = cluster.getChildCount();
             let size = Math.min(30 + (count / 10), 60);
-            const html = `<div style="background-color: #9B2915; color: white; border-radius: 50%; width:${size}px; height:${size}px; line-height:${size}px; text-align: center; font-weight: bold; border: 2px solid #E4D6A7;">${count}</div>`;
+            const html = `<div style="background-color: var(--color-accent); color: var(--color-white); border-radius: 50%; width:${size}px; height:${size}px; line-height:${size}px; text-align: center; font-weight: bold; border: 2px solid var(--color-dark); box-shadow: 0 2px 5px rgba(0,0,0,0.2);">${count}</div>`;
             return L.divIcon({ html: html, className: 'custom-cluster', iconSize: L.point(size, size) });
         }
     });
@@ -56,22 +51,19 @@ const updateMapMarkers = (records) => {
     const validMarkers = [];
 
     records.forEach(record => {
-        // Procura geolocalização em qualquer detalhe (para cobrir Pessoas e Documentos)
         const geoDetail = (record.details || []).find(d => d.fieldName.includes('Geolocalização'));
-        
         if (geoDetail && geoDetail.value && geoDetail.value.geo && geoDetail.value.geo.wkt) {
             const coords = geoDetail.value.geo.wkt.match(/POINT\(\s*([-\d\.]+)\s+([-\d\.]+)\s*\)/);
             if (coords) {
                 const lng = parseFloat(coords[1]); 
                 const lat = parseFloat(coords[2]);
                 const marker = L.marker([lat, lng]);
-                
                 let title = record.rec_Title ? record.rec_Title.replace(/\n/g, ' ') : "Item";
                 
                 marker.bindPopup(`
-                    <strong style="color:#9B2915">${title}</strong><br>
+                    <strong style="color:var(--color-dark)">${title}</strong><br>
                     <button onclick="displayRecordDetailsFromMap('${record.rec_ID}')" 
-                            style="margin-top:5px; padding:4px 8px; background:#9B2915; color:white; border:none; border-radius:3px; cursor:pointer;">
+                            style="margin-top:8px; padding:6px 12px; background:var(--color-accent); color:var(--color-white); border:none; border-radius:4px; cursor:pointer; width: 100%;">
                         Ver Detalhes
                     </button>
                 `);
@@ -86,25 +78,21 @@ const updateMapMarkers = (records) => {
 };
 
 window.displayRecordDetailsFromMap = (recID) => {
-    const record = fullData.heurist.records.find(r => r.rec_ID === recID);
+    const record = fullData.heurist.records.find(r => String(r.rec_ID) === String(recID));
     if (record) {
         displayRecordDetails(record);
         document.getElementById('document-detail').scrollIntoView({ behavior: 'smooth' });
     }
 };
 
-// --- Filtros e Lógica de Busca ---
 const populateEntityFilter = () => {
     const records = fullData.heurist.records || [];
     const entityTypes = new Set();
-    
     records.forEach(r => { 
-        // REMOVIDO: Relationship type não aparece mais
         if (r.rec_RecTypeName && r.rec_RecTypeName !== 'Record relationship') {
             entityTypes.add(r.rec_RecTypeName);
         }
     });
-    
     const sortedTypes = Array.from(entityTypes).sort();
     entityFilter.innerHTML = '<option value="all">Todos</option>';
     sortedTypes.forEach(type => entityFilter.innerHTML += `<option value="${type}">${type}</option>`);
@@ -121,15 +109,11 @@ const generateDynamicFilters = () => {
         if (!allFields[recType]) allFields[recType] = new Map();
 
         (record.details || []).forEach(detail => {
-            // Pula o campo Ano aqui, pois ele terá input próprio
             if (detail.fieldName === 'Ano(s) de produção') return;
-
             const isFilterable = ['enum', 'freetext', 'date'].includes(detail.fieldType) || !detail.fieldType;
-            // Pula campos de texto longo nos filtros dropdown
             if (isFilterable && !detail.fieldName.includes('Transcrição') && detail.fieldName !== 'Resumo do documento') {
                 let valueLabel = detail.termLabel || detail.value;
                 if (typeof valueLabel === 'object' && valueLabel?.title) valueLabel = valueLabel.title;
-                
                 if (valueLabel) {
                     if (!allFields[recType].has(detail.fieldName)) allFields[recType].set(detail.fieldName, new Set());
                     allFields[recType].get(detail.fieldName).add(String(valueLabel).trim());
@@ -139,49 +123,57 @@ const generateDynamicFilters = () => {
     });
 
     dynamicFiltersContainer.innerHTML = '';
-    
-    // --- Input de DATA (Intervalo) ---
-    // Aparece sempre, pois é útil para tudo
+    const entitiesProcess = selectedEntity === 'all' ? Object.keys(allFields) : [selectedEntity];
+
+    // ORDEM EXATA DOS FILTROS COMO PEDIDO PELO PROFESSOR
+    const requestedOrder = ['Papel', 'Tipo de prática'];
+
+    // 1. Renderiza Papel e Tipo de Prática primeiro
+    requestedOrder.forEach(fieldName => {
+        let options = new Set();
+        entitiesProcess.forEach(entity => {
+            if (allFields[entity] && allFields[entity].has(fieldName)) {
+                allFields[entity].get(fieldName).forEach(val => options.add(val));
+            }
+        });
+        if (options.size > 0) {
+            const values = Array.from(options).sort();
+            let html = `<div class="filter-group"><label>${fieldName}:</label><select class="dynamic-filter" data-field-name="${fieldName}"><option value="all">Todos</option>`;
+            values.forEach(value => html += `<option value="${value}">${value}</option>`);
+            html += `</select></div>`;
+            dynamicFiltersContainer.innerHTML += html;
+        }
+    });
+
+    // 2. Renderiza o Ano (Intervalo) no meio
     dynamicFiltersContainer.innerHTML += `
         <div class="filter-group">
-            <label style="color:var(--color-gold); font-weight:bold;">Ano (Intervalo):</label>
+            <label>Ano (Intervalo):</label>
             <div style="display: flex; gap: 10px;">
-                <input type="number" id="year-min" placeholder="De (ex: 1600)" class="dynamic-filter-year" style="width: 50%; padding:8px; background:rgba(0,0,0,0.3); border:1px solid var(--color-gold); color:white; border-radius:4px;">
-                <input type="number" id="year-max" placeholder="Até (ex: 1800)" class="dynamic-filter-year" style="width: 50%; padding:8px; background:rgba(0,0,0,0.3); border:1px solid var(--color-gold); color:white; border-radius:4px;">
+                <input type="number" id="year-min" placeholder="De (ex: 1600)" class="dynamic-filter-year" style="width: 50%; padding:10px; background:var(--color-white); border:1px solid rgba(28,17,10,0.3); color:var(--color-dark); border-radius:4px;">
+                <input type="number" id="year-max" placeholder="Até (ex: 1800)" class="dynamic-filter-year" style="width: 50%; padding:10px; background:var(--color-white); border:1px solid rgba(28,17,10,0.3); color:var(--color-dark); border-radius:4px;">
             </div>
         </div>
     `;
 
-    // --- Configuração de Campos Prioritários ---
-    // REMOVIDO: 'Ofício' foi retirado da lista geral
-    let priorityFields = ['Local de referência', 'Qualidade ou cor', 'Condição jurídica', 'Nação'];
-    
-    // ADICIONADO: Filtros específicos para Pessoas
-    if (selectedEntity === 'Pessoa') {
-        priorityFields.push('Papel', 'Tipo de prática');
-    } else if (selectedEntity === 'Documento') {
-        priorityFields.push('Tipologia documental');
-    }
-
-    const entitiesProcess = selectedEntity === 'all' ? Object.keys(allFields) : [selectedEntity];
-    const renderedFilters = new Set();
-
-    entitiesProcess.forEach(entity => {
-        if (allFields[entity]) {
-            allFields[entity].forEach((valuesSet, fieldName) => {
-                if (priorityFields.includes(fieldName) && !renderedFilters.has(fieldName)) {
-                    renderedFilters.add(fieldName);
-                    const values = Array.from(valuesSet).sort();
-                    let html = `<div class="filter-group"><label style="color:var(--color-gold); font-weight:bold;">${fieldName}:</label><select class="dynamic-filter" data-field-name="${fieldName}"><option value="all">Todos</option>`;
-                    values.forEach(value => html += `<option value="${value}">${value}</option>`);
-                    html += `</select></div>`;
-                    dynamicFiltersContainer.innerHTML += html;
-                }
-            });
+    // 3. Renderiza o Restante da Ordem
+    const restOrder = ['Condição jurídica', 'Qualidade ou cor', 'Nação'];
+    restOrder.forEach(fieldName => {
+        let options = new Set();
+        entitiesProcess.forEach(entity => {
+            if (allFields[entity] && allFields[entity].has(fieldName)) {
+                allFields[entity].get(fieldName).forEach(val => options.add(val));
+            }
+        });
+        if (options.size > 0) {
+            const values = Array.from(options).sort();
+            let html = `<div class="filter-group"><label>${fieldName}:</label><select class="dynamic-filter" data-field-name="${fieldName}"><option value="all">Todos</option>`;
+            values.forEach(value => html += `<option value="${value}">${value}</option>`);
+            html += `</select></div>`;
+            dynamicFiltersContainer.innerHTML += html;
         }
     });
 
-    // Re-adiciona listeners para os inputs de ano recém-criados
     document.querySelectorAll('.dynamic-filter-year').forEach(input => {
         input.addEventListener('input', applyFilters);
     });
@@ -192,7 +184,6 @@ const applyFilters = () => {
     const activeFilters = {};
     const searchText = searchInput.value.toLowerCase().trim();
     
-    // Captura anos
     const yearMinInput = document.getElementById('year-min')?.value;
     const yearMaxInput = document.getElementById('year-max')?.value;
     const yearMin = yearMinInput ? parseInt(yearMinInput) : 0;
@@ -205,32 +196,23 @@ const applyFilters = () => {
     filteredRecords = (fullData.heurist.records || []).filter(record => {
         const recType = record.rec_RecTypeName || "Outros";
         
-        // 0. Esconde Relacionamentos
         if (recType === 'Record relationship') return false;
-
-        // 1. Filtro de Entidade
         if (selectedEntity !== 'all' && recType !== selectedEntity) return false;
         
-        // 2. Filtro de Ano (Lógica melhorada)
-        // Só aplica se o usuário digitou algo
         if (yearMinInput || yearMaxInput) {
             const yearDetail = (record.details || []).find(d => d.fieldName === 'Ano(s) de produção');
-            if (!yearDetail) return false; // Se não tem ano, sai
+            if (!yearDetail) return false; 
             
             let recYear = 0;
-            // Verifica se o valor é um objeto complexo (ex: {start:..., end:...}) ou simples
             if (typeof yearDetail.value === 'object') {
-                // Tenta pegar o ano mais antigo disponivel na estrutura
                 const rawYear = yearDetail.value.start?.earliest || yearDetail.value.estMinDate || yearDetail.value;
                 recYear = parseInt(rawYear);
             } else {
                 recYear = parseInt(yearDetail.value);
             }
-
             if (isNaN(recYear) || recYear < yearMin || recYear > yearMax) return false;
         }
 
-        // 3. Filtros Dropdown
         const passesDynamicFilters = Object.keys(activeFilters).every(fieldName => {
             const filterValue = activeFilters[fieldName];
             return (record.details || []).some(detail => {
@@ -244,28 +226,19 @@ const applyFilters = () => {
         });
         if (!passesDynamicFilters) return false;
         
-        // 4. Busca por Texto (GLOBAL - Inclui Transcrições)
         if (searchText.length > 0) {
-            // Busca no Título
             if ((record.rec_Title || '').toLowerCase().includes(searchText)) return true;
-
-            // Busca em TODOS os detalhes (transforma tudo em texto para varrer)
             const detailsMatch = (record.details || []).some(detail => {
                 let val = detail.termLabel || detail.value;
-                
-                // Se for objeto (ex: geo), ignora ou converte
                 if (typeof val === 'object') {
-                    if (val?.title) val = val.title; // Link
-                    else if (val?.geo) return false; // Geo não é texto
-                    else val = JSON.stringify(val); // Outros objetos
+                    if (val?.title) val = val.title; 
+                    else if (val?.geo) return false; 
+                    else val = JSON.stringify(val); 
                 }
-                
                 return String(val || '').toLowerCase().includes(searchText);
             });
-            
             if (!detailsMatch) return false;
         }
-
         return true;
     });
 
@@ -278,7 +251,7 @@ const renderResultsList = (records) => {
     resultsCountSpan.textContent = records.length;
     
     if (records.length === 0) {
-        recordsContainer.innerHTML = `<li style="padding:10px; opacity: 0.8;">Nenhum item encontrado.</li>`;
+        recordsContainer.innerHTML = `<li style="padding:10px; opacity: 0.8; color: var(--color-dark);">Nenhum item encontrado.</li>`;
         return;
     }
 
@@ -289,13 +262,13 @@ const renderResultsList = (records) => {
         let title = record.rec_Title ? record.rec_Title.replace(/\n/g, ' - ') : "Sem Título";
         const type = record.rec_RecTypeName || "Item";
         
-        li.innerHTML = `<strong style="color:var(--color-accent);">[${type}]</strong> ${title}`;
+        li.innerHTML = `<strong style="color:var(--color-accent);">[${type}]</strong> <span style="color:var(--color-dark);">${title}</span>`;
         li.addEventListener('click', () => displayRecordDetails(record));
         recordsContainer.appendChild(li);
     });
 };
 
-// --- Exibição de Detalhes (Com Abas) ---
+// --- Exibição de Detalhes com Links Dinâmicos (Pessoa <-> Documento) ---
 const displayRecordDetails = (record) => {
     document.querySelectorAll('.document-item').forEach(item => item.classList.remove('selected'));
     const activeItem = document.querySelector(`[data-record-id="${record.rec_ID}"]`);
@@ -312,16 +285,35 @@ const displayRecordDetails = (record) => {
     (record.details || []).forEach(detail => {
         let label = detail.fieldName;
         let value = detail.termLabel || detail.value;
-        
+        let linkedRecId = null;
+
+        // Tenta capturar ID de relacionamento caso o campo seja um vínculo no Heurist
+        if (typeof detail.value === 'object' && detail.value !== null) {
+            if (detail.value.id) linkedRecId = detail.value.id;
+            else if (detail.value.rec_ID) linkedRecId = detail.value.rec_ID;
+        }
+
         if (typeof value === 'object' && value !== null && value.title) {
             value = value.title.replace(/\n/g, ' - ');
         }
-        // Tratamento especial para datas complexas na visualização
+        
+        // Se não achou ID direto, tenta buscar na base pelo texto exato
+        if (!linkedRecId && typeof value === 'string') {
+            const possibleMatch = fullData.heurist.records.find(r => (r.rec_Title || '').replace(/\n/g, ' - ') === value);
+            if (possibleMatch) linkedRecId = possibleMatch.rec_ID;
+        }
+
         if (typeof value === 'object' && label === 'Ano(s) de produção') {
              value = value.start?.earliest || value.estMinDate || JSON.stringify(value);
         }
 
         value = String(value || 'N/A');
+
+        // Cria a âncora clicável se existir um ID de vínculo
+        let displayHTML = value;
+        if (linkedRecId && linkedRecId !== record.rec_ID) {
+            displayHTML = `<a href="javascript:void(0)" onclick="displayRecordDetailsFromMap('${linkedRecId}')" style="color: var(--color-accent); text-decoration: underline; font-weight: bold; cursor: pointer;">${value} &raquo;</a>`;
+        }
 
         if (label === 'Resumo do documento') {
             summary = value;
@@ -329,59 +321,60 @@ const displayRecordDetails = (record) => {
             transcriptions[label] = value;
         } else if (['Link para acesso', 'URL', 'Cota'].includes(label)) {
             links.push({ label, value });
-        } else if (['Denunciante', 'Denunciado(a)', 'Citado(a)', 'Autoridades', 'Testemunha', 'Apresentado(a)'].includes(label)) {
+        } else if (['Documento', 'Denunciante', 'Denunciado(a)', 'Citado(a)', 'Autoridades', 'Testemunha', 'Apresentado(a)'].includes(label)) {
+            // Documento também entra aqui para pessoas listarem seus docs
             if (!peopleInfo[label]) peopleInfo[label] = [];
-            peopleInfo[label].push(value);
+            peopleInfo[label].push(displayHTML);
         } else if (!label.includes('Geolocalização') && label !== 'Código de imagem') {
-            mainInfo.push({ label, value });
+            mainInfo.push({ label, value: displayHTML });
         }
     });
 
-    let html = `<h2 style="color: var(--color-accent); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">${title}</h2>`;
+    let html = `<h2 style="color: var(--color-accent); border-bottom: 1px solid rgba(28,17,10,0.2); padding-bottom: 10px;">${title}</h2>`;
     
     html += `<div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">`;
     mainInfo.forEach(info => {
-        html += `<div><span class="detail-label">${info.label}</span><span class="detail-value">${info.value}</span></div>`;
+        html += `<div><span class="detail-label" style="color: var(--color-dark); font-weight: bold; display: block; margin-bottom: 3px;">${info.label}</span><span class="detail-value" style="color: var(--color-dark);">${info.value}</span></div>`;
     });
     html += `</div>`;
 
     if (Object.keys(peopleInfo).length > 0) {
-        html += `<div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">`;
-        for (const [role, names] of Object.entries(peopleInfo)) {
-            html += `<div class="detail-group"><span class="detail-label">${role}</span><ul class="person-list">`;
-            names.forEach(name => { html += `<li>${name}</li>`; });
+        html += `<div style="margin-top: 20px; border-top: 1px solid rgba(28,17,10,0.2); padding-top: 15px;">`;
+        for (const [role, items] of Object.entries(peopleInfo)) {
+            html += `<div class="detail-group" style="margin-bottom: 15px;"><span class="detail-label" style="color: var(--color-dark); font-weight: bold; display: block; margin-bottom: 5px;">${role}</span><ul class="person-list" style="list-style: none; padding-left: 10px; border-left: 2px solid var(--color-accent);">`;
+            items.forEach(item => { html += `<li style="color: var(--color-dark); margin-bottom: 5px;">${item}</li>`; });
             html += `</ul></div>`;
         }
         html += `</div>`;
     }
 
     if (links.length > 0) {
-        html += `<div style="margin-top: 20px; background: rgba(228, 214, 167, 0.05); padding: 15px; border-radius: 5px;">`;
+        html += `<div style="margin-top: 20px; background: rgba(228, 214, 167, 0.4); padding: 15px; border-radius: 5px; border: 1px solid rgba(28,17,10,0.1);">`;
         links.forEach(info => {
             let content = info.value;
-            if (info.value.startsWith('http')) content = `<a href="${info.value}" target="_blank">Acessar Documento Externo &raquo;</a>`;
-            html += `<div style="margin-bottom:5px;"><strong style="color:var(--color-gold)">${info.label}:</strong> ${content}</div>`;
+            if (info.value.startsWith('http')) content = `<a href="${info.value}" target="_blank" style="color: var(--color-accent); text-decoration: underline;">Acessar Documento Externo &raquo;</a>`;
+            html += `<div style="margin-bottom:5px;"><strong style="color:var(--color-dark)">${info.label}:</strong> <span style="color: var(--color-dark);">${content}</span></div>`;
         });
         html += `</div>`;
     }
 
     if (summary) {
-        html += `<div style="margin-top: 25px;"><h3 style="color: var(--color-gold); border-left: 4px solid var(--color-accent); padding-left: 10px;">Resumo</h3><div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:4px; margin-top:10px; line-height:1.6;">${summary}</div></div>`;
+        html += `<div style="margin-top: 25px;"><h3 style="color: var(--color-dark); border-left: 4px solid var(--color-accent); padding-left: 10px;">Resumo</h3><div style="background:rgba(255,255,255,0.5); padding:15px; border-radius:4px; margin-top:10px; line-height:1.6; color: var(--color-dark); border: 1px solid rgba(28,17,10,0.1);">${summary}</div></div>`;
     }
 
     const transKeys = Object.keys(transcriptions);
     if (transKeys.length > 0) {
-        html += `<div class="tabs-container"><div class="tabs-header">`;
+        html += `<div class="tabs-container" style="border: 1px solid rgba(28,17,10,0.2);"><div class="tabs-header" style="background: rgba(28,17,10,0.05);">`;
         transKeys.forEach((key, index) => {
             const activeClass = index === 0 ? 'active' : '';
             const btnLabel = key.replace('Transcrição ', ''); 
-            html += `<button class="tab-btn ${activeClass}" onclick="switchTab('${index}')">${btnLabel}</button>`;
+            html += `<button class="tab-btn ${activeClass}" onclick="switchTab('${index}')" style="color: var(--color-dark); border-right: 1px solid rgba(28,17,10,0.1); padding: 15px; cursor: pointer; border-bottom: none; border-top: none; background: ${index === 0 ? 'var(--color-dark)' : 'transparent'}; color: ${index === 0 ? 'var(--color-gold)' : 'var(--color-dark)'};">${btnLabel}</button>`;
         });
         html += `</div>`;
 
         transKeys.forEach((key, index) => {
             const activeClass = index === 0 ? 'active' : '';
-            html += `<div id="tab-content-${index}" class="tab-content ${activeClass}">${transcriptions[key]}</div>`;
+            html += `<div id="tab-content-${index}" class="tab-content ${activeClass}" style="background: var(--color-white); color: var(--color-dark); border-top: 1px solid rgba(28,17,10,0.2); padding: 20px; display: ${index === 0 ? 'block' : 'none'}; white-space: pre-wrap; max-height: 400px; overflow-y: auto;">${transcriptions[key]}</div>`;
         });
         html += `</div>`;
     }
@@ -390,10 +383,24 @@ const displayRecordDetails = (record) => {
 };
 
 window.switchTab = (index) => {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    document.querySelectorAll('.tab-btn')[index].classList.add('active');
-    document.getElementById(`tab-content-${index}`).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = 'var(--color-dark)';
+    });
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+        content.style.display = 'none';
+    });
+    
+    const activeBtn = document.querySelectorAll('.tab-btn')[index];
+    activeBtn.classList.add('active');
+    activeBtn.style.backgroundColor = 'var(--color-dark)';
+    activeBtn.style.color = 'var(--color-gold)';
+    
+    const activeContent = document.getElementById(`tab-content-${index}`);
+    activeContent.classList.add('active');
+    activeContent.style.display = 'block';
 };
 
 const clearFilters = () => {
