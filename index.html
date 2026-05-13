@@ -12,14 +12,26 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         .hero h1 { font-size: 3.5em; margin-bottom: 15px; line-height: 1.2; max-width: 900px; }
-        .hero p { font-size: 1.4em; max-width: 800px; margin-bottom: 40px; font-weight: 400; }
+        
+        /* DESTAQUE NO SUBTÍTULO: Adicionado fundo sutil e peso para não sumir no manuscrito */
+        .hero p { 
+            font-size: 1.4em; 
+            max-width: 800px; 
+            margin-bottom: 40px; 
+            font-weight: 600; 
+            color: var(--color-dark);
+            background: rgba(228, 214, 167, 0.6); 
+            padding: 10px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(4px);
+        }
+
         .presentation-section { padding: 50px 0; }
         
         @media (max-width: 768px) {
             .hero { padding: 120px 20px 40px; min-height: auto; margin-top: 20px; }
             .hero h1 { font-size: 2em; margin-bottom: 10px; }
-            .hero p { font-size: 1.1em; margin-bottom: 30px; padding: 0 10px; }
-            .content-box { padding: 25px !important; }
+            .hero p { font-size: 1.1em; margin-bottom: 30px; padding: 15px; }
         }
     </style>
 </head>
@@ -55,7 +67,7 @@
                 <div class="content-box">
                     <h2 style="color: var(--color-accent); border-bottom: 1px solid var(--color-accent); display: inline-block; padding-bottom: 5px; margin-bottom: 20px;">Sobre a base de dados</h2>
                     <p style="text-align: justify; margin-bottom: 15px;">
-                        A base de dados Espiritualidades Africanas foi criada em um projeto de pesquisa coordenado pelo Prof. Dr. Alexandre Marcussi (Universidade de São Paulo) e pela Profª. Drª. Daniela Calainho (Universidade Estadual do Rio de Janeiro), com uma equipe de pesquisadores de cinco diferentes instituições universitárias brasileiras. O objetivo é agrupar informações e fontes documentais sobre africanos, descendentes de africanos e indígenas que foram perseguidos por suas práticas religiosas nos diversos territórios do império português, incluindo Portugal, o Brasil e a África, entre os séculos XVI e XVIII.
+                        A base de dados Espiritualidades Africanas foi criada em um projeto de pesquisa coordenado pelo Prof. Dr. Alexandre Marcussi (Universidade de São Paulo) e pela Profª. Drª. Daniela Calainho (Universidade do Estado do Rio de Janeiro), com uma equipe de pesquisadores de cinco diferentes instituições universitárias brasileiras. O objetivo é agrupar informações e fontes documentais sobre africanos, descendentes de africanos e indígenas que foram perseguidos por suas práticas religiosas nos diversos territórios do império português, incluindo Portugal, o Brasil e a África, entre os séculos XVI e XVIII.
                     </p>
                     <p style="text-align: justify; margin-bottom: 15px;">
                         A maior parte das informações provém de documentos produzidos pelos tribunais do Santo Ofício da Inquisição de Portugal, com destaque para o tribunal distrital de Lisboa, que tinha jurisdição sobre o Brasil e a África e que perseguia práticas devocionais não católicas, enquadrando-as como formas de “feitiçaria”. Ao explorar a base de dados, você encontrará informações sobre os acusados e as testemunhas que depuseram contra eles, bem como sobre as práticas devocionais, muito variadas, pelas quais eles estavam sendo perseguidos, que incluíam desde a devoção a entidades espirituais africanas até formas heterodoxas de vivenciar o catolicismo popular.
