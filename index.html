@@ -12,27 +12,26 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         .hero h1 { font-size: 3.5em; margin-bottom: 15px; line-height: 1.2; max-width: 900px; }
-        .hero p { font-size: 1.4em; max-width: 800px; margin-bottom: 40px; font-weight: 400; }
+        
+        /* DESTAQUE NO SUBTÍTULO: Adicionado fundo sutil e peso para não sumir no manuscrito */
+        .hero p { 
+            font-size: 1.4em; 
+            max-width: 800px; 
+            margin-bottom: 40px; 
+            font-weight: 600; 
+            color: var(--color-dark);
+            background: rgba(228, 214, 167, 0.6); 
+            padding: 10px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(4px);
+        }
+
         .presentation-section { padding: 50px 0; }
-        .articles-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
-        }
-        .article-card {
-            background-color: var(--bg-glass-light); border: 1px solid rgba(28, 17, 10, 0.15);
-            padding: 30px; border-radius: 8px; transition: transform 0.3s, border-color 0.3s;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .article-card:hover {
-            transform: translateY(-5px); border-color: var(--color-accent); box-shadow: 0 5px 15px rgba(28,17,10,0.1);
-        }
-        .article-card h3 { color: var(--color-accent); margin-bottom: 15px; font-size: 1.3em; }
         
         @media (max-width: 768px) {
             .hero { padding: 120px 20px 40px; min-height: auto; margin-top: 20px; }
             .hero h1 { font-size: 2em; margin-bottom: 10px; }
-            .hero p { font-size: 1.1em; margin-bottom: 30px; padding: 0 10px; }
-            .content-box { padding: 25px !important; }
-            .articles-grid { grid-template-columns: 1fr; gap: 20px; }
+            .hero p { font-size: 1.1em; margin-bottom: 30px; padding: 15px; }
         }
     </style>
 </head>
@@ -59,7 +58,7 @@
             <div class="container">
                 <h1>Espiritualidades africanas</h1>
                 <p>Práticas religiosas afro-indígenas no Império Português (séculos XVI-XVIII)</p>
-                <a href="explorar.html" class="cta-button">Explorar Conteúdo</a>
+                <a href="explorar.html" class="cta-button">Explorar a Base de Dados</a>
             </div>
         </section>
 
@@ -68,7 +67,7 @@
                 <div class="content-box">
                     <h2 style="color: var(--color-accent); border-bottom: 1px solid var(--color-accent); display: inline-block; padding-bottom: 5px; margin-bottom: 20px;">Sobre a base de dados</h2>
                     <p style="text-align: justify; margin-bottom: 15px;">
-                        A base de dados Espiritualidades Africanas foi criada em um projeto de pesquisa coordenado pelo Prof. Dr. Alexandre Marcussi (Universidade de São Paulo) e pela Profª. Drª. Daniela Calainho (Universidade Estadual do Rio de Janeiro), com uma equipe de pesquisadores de cinco diferentes instituições universitárias brasileiras. O objetivo é agrupar informações e fontes documentais sobre africanos, descendentes de africanos e indígenas que foram perseguidos por suas práticas religiosas nos diversos territórios do império português, incluindo Portugal, o Brasil e a África, entre os séculos XVI e XVIII.
+                        A base de dados Espiritualidades Africanas foi criada em um projeto de pesquisa coordenado pelo Prof. Dr. Alexandre Marcussi (Universidade de São Paulo) e pela Profª. Drª. Daniela Calainho (Universidade do Estado do Rio de Janeiro), com uma equipe de pesquisadores de cinco diferentes instituições universitárias brasileiras. O objetivo é agrupar informações e fontes documentais sobre africanos, descendentes de africanos e indígenas que foram perseguidos por suas práticas religiosas nos diversos territórios do império português, incluindo Portugal, o Brasil e a África, entre os séculos XVI e XVIII.
                     </p>
                     <p style="text-align: justify; margin-bottom: 15px;">
                         A maior parte das informações provém de documentos produzidos pelos tribunais do Santo Ofício da Inquisição de Portugal, com destaque para o tribunal distrital de Lisboa, que tinha jurisdição sobre o Brasil e a África e que perseguia práticas devocionais não católicas, enquadrando-as como formas de “feitiçaria”. Ao explorar a base de dados, você encontrará informações sobre os acusados e as testemunhas que depuseram contra eles, bem como sobre as práticas devocionais, muito variadas, pelas quais eles estavam sendo perseguidos, que incluíam desde a devoção a entidades espirituais africanas até formas heterodoxas de vivenciar o catolicismo popular.
@@ -76,29 +75,6 @@
                     <p style="text-align: justify;">
                         O projeto de pesquisa no qual esta base de dados foi construída encontra-se em andamento. As informações disponíveis até o momento são parciais e novos dados serão incluídos na base à medida que o trabalho de pesquisa avança.
                     </p>
-                </div>
-            </div>
-        </section>
-
-        <section class="presentation-section" style="padding-top: 0;">
-            <div class="container">
-                <h2 style="text-align: center; margin-bottom: 40px;">Textos e Análises</h2>
-                <div class="articles-grid">
-                    <div class="article-card">
-                        <h3>O Legado do Vento</h3>
-                        <p>Uma análise sobre as práticas de feitiçaria em Angola no Século XVIII e as suas conexões com o Brasil colonial.</p>
-                        <a href="#" style="display:block; margin-top:15px; font-weight:bold;">Ler artigo completo &raquo;</a>
-                    </div>
-                    <div class="article-card">
-                        <h3>Resistências Espirituais</h3>
-                        <p>Como as práticas religiosas serviram como ferramenta de resistência cultural e política face à administração colonial.</p>
-                        <a href="#" style="display:block; margin-top:15px; font-weight:bold;">Ler artigo completo &raquo;</a>
-                    </div>
-                    <div class="article-card">
-                        <h3>Itinerâncias Atlânticas</h3>
-                        <p>O trânsito de saberes religiosos entre as margens do Atlântico Sul e a reconfiguração de identidades.</p>
-                        <a href="#" style="display:block; margin-top:15px; font-weight:bold;">Ler artigo completo &raquo;</a>
-                    </div>
                 </div>
             </div>
         </section>

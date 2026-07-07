@@ -24,14 +24,18 @@
             border: 1px solid rgba(28, 17, 10, 0.2); height: fit-content; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         .filter-group { margin-bottom: 25px; }
-        .filter-group label { display: block; font-weight: bold; margin-bottom: 8px; font-family: var(--font-heading); font-size: 0.9em; }
+        .filter-group label { display: block; font-weight: bold; margin-bottom: 8px; font-family: var(--font-heading); font-size: 0.9em; color: var(--color-accent); }
         #result-list { list-style: none; max-height: 400px; overflow-y: auto; border-top: 1px solid rgba(28,17,10,0.1); padding-top: 10px; }
         .document-item { padding: 8px 5px; cursor: pointer; border-bottom: 1px dashed rgba(28,17,10,0.2); transition: background-color 0.2s; line-height: 1.3; }
         .document-item:hover { background-color: rgba(155, 41, 21, 0.1); }
         .document-item.selected { background-color: var(--color-accent); color: var(--color-white); font-weight: bold; }
+        .document-item.selected span { color: var(--color-white) !important; }
         
         #map-placeholder { height: 400px; width: 100%; border-radius: 8px; border: 1px solid rgba(28, 17, 10, 0.2); z-index: 1; margin-bottom: 30px; }
         #document-detail { background-color: var(--bg-glass-light); padding: 30px; border-radius: 8px; border: 1px solid rgba(28, 17, 10, 0.2); }
+        
+        .how-to-item { padding: 10px; border-bottom: 1px solid rgba(28,17,10,0.05); }
+        .how-to-item:last-child { border-bottom: none; }
     </style>
 </head>
 <body>
@@ -44,11 +48,11 @@
                 <span class="bar"></span><span class="bar"></span><span class="bar"></span>
             </div>
             <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="explorar.html">Explorar</a></li>
-    <li><a href="sobre.html">O Projeto</a></li>
-    <li><a href="biblioteca.html">Biblioteca</a></li>
-</ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explorar.html">Explorar</a></li>
+                <li><a href="sobre.html">O Projeto</a></li>
+                <li><a href="biblioteca.html">Biblioteca</a></li>
+            </ul>
         </div>
     </nav>
 
@@ -56,21 +60,28 @@
         <div class="container">
             <header class="explore-header">
                 <h1>Base de Dados Interativa</h1>
-                <p>Filtre os registros e explore a geolocalização dos documentos.</p>
+                <p style="max-width: 800px; margin: 15px auto 0; text-align: center; line-height: 1.6; font-weight: 600; color: var(--color-dark); background: rgba(228, 214, 167, 0.6); padding: 10px 20px; border-radius: 8px; backdrop-filter: blur(4px);">Filtre os registros e explore a geolocalização dos documentos.</p>
             </header>
 
             <div class="explore-layout">
                 <aside class="sidebar">
+                    <p style="font-size: 0.85em; margin-bottom: 15px; color: var(--color-dark);">
+                        Dúvida de como usar nossos filtros? 
+                        <a href="#como-usar" style="font-weight: bold; text-decoration: underline; color: var(--color-accent);">Veja como usar</a>
+                    </p>
+
                     <div class="filter-group">
-                        <label for="search-text">Busca por Texto:</label>
-                        <input type="text" id="search-text" placeholder="Buscar no título ou resumo...">
+                        <label for="search-text">Busca por texto:</label>
+                        <input type="text" id="search-text" placeholder="Palavras-chave...">
                     </div>
                     <div class="filter-group">
-                        <label for="entity-filter">Tipo de Registro:</label>
+                        <label for="entity-filter">Tipo de registro:</label>
                         <select id="entity-filter"><option value="all">Todos</option></select>
                     </div>
+                    
                     <div id="dynamic-filters"></div>
-                    <button id="clear-filters-button" class="cta-button" style="width: 100%; margin-bottom: 15px;">Limpar Filtros</button>
+                    
+                    <button id="clear-filters-button" class="cta-button" style="width: 100%; margin-bottom: 15px; background-color: var(--color-dark); border-color: var(--color-dark);">Limpar Filtros</button>
                     <div>
                         <label style="border-bottom: 1px solid var(--color-accent); display:block; padding-bottom:5px; margin-bottom:10px;">
                             Lista de Resultados: (<span id="results-count">0</span>)
@@ -82,17 +93,34 @@
                 <section class="results-area">
                     <div id="map-placeholder"></div>
                     <div id="document-detail">
-                        <h2 style="color: var(--color-accent);">Detalhes do Item</h2>
-                        <p>Selecione um item na lista à esquerda para visualizar as informações completas.</p>
+                        <h2 style="color: var(--color-accent);">Detalhes do registro</h2>
+                        <p style="text-align: justify;">Selecione um registro na lista à esquerda ou no mapa interativo para visualizar as informações completas. Os registros de “Documento” trazem transcrições e links para os manuscritos originais digitalizados.</p>
                     </div>
                 </section>
             </div>
+
+            <section id="como-usar" style="margin-top: 60px; border-top: 1px solid rgba(28,17,10,0.1); padding-top: 40px; margin-bottom: 40px;">
+                <div class="content-box" style="border-left: 5px solid var(--color-accent); background-color: rgba(228, 214, 167, 0.4);">
+                    <h2 style="color: var(--color-accent); margin-bottom: 20px;">Como usar os filtros e o mapa</h2>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <p style="text-align: justify; line-height: 1.6;">Use os campos do menu para filtrar os registros da base e buscar palavras-chave. Ao selecionar o “Tipo de registro”, serão exibidos apenas os documentos ou apenas as pessoas neles citadas. Caso queira exibir apenas os indivíduos que foram acusados (excluindo todas as demais pessoas citadas nos documentos, mas não acusadas), selecione a opção “Acusado(a)” no campo “Papel”. O campo de “Busca por texto” permite buscar palavras no conteúdo integral dos documentos, na grafia atual ou da época.</p>
+                        </div>
+                        
+                        <div style="background: rgba(28, 17, 10, 0.05); padding: 20px; border-radius: 4px; border-left: 3px solid var(--color-accent);">
+                            <strong style="color: var(--color-accent); display: block; margin-bottom: 5px;">Mapa Interativo:</strong>
+                            <p style="font-size: 0.95em; text-align: justify;">Os <strong>círculos com números</strong> indicam que há vários registros naquela região; clique neles para aproximar. Ao clicar em um <strong>marcador individual</strong>, você verá o título e um botão para abrir os detalhes completos do item logo abaixo.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Grupo de Pesquisa Itinerâncias.</p>
+            <p>&copy; 2025 Projeto Espiritualidades Africanas.</p>
         </div>
     </footer>
 </body>
