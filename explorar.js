@@ -88,16 +88,11 @@ window.displayRecordDetailsFromMap = (recID) => {
 const populateEntityFilter = () => {
     const records = fullData.heurist.records || [];
     const entityTypes = new Set();
-    
-    // Lista de lixos do Heurist que o site deve ignorar
-    const ignoredTypes = ['Record relationship', 'CMS Menu-Page', 'CMS_Home', 'Person'];
-    
     records.forEach(r => { 
-        if (r.rec_RecTypeName && !ignoredTypes.includes(r.rec_RecTypeName)) {
+        if (r.rec_RecTypeName && r.rec_RecTypeName !== 'Record relationship') {
             entityTypes.add(r.rec_RecTypeName);
         }
     });
-    
     const sortedTypes = Array.from(entityTypes).sort();
     entityFilter.innerHTML = '<option value="all">Todos</option>';
     sortedTypes.forEach(type => entityFilter.innerHTML += `<option value="${type}">${type}</option>`);
@@ -182,7 +177,7 @@ const generateDynamicFilters = () => {
     document.querySelectorAll('.dynamic-filter-year').forEach(input => {
         input.addEventListener('input', applyFilters);
     });
-}; // <-- FECHAMENTO DA FUNÇÃO generateDynamicFilters ADICIONADO AQUI
+};
 
 const applyFilters = () => {
     const selectedEntity = entityFilter.value;
@@ -201,12 +196,9 @@ const applyFilters = () => {
     filteredRecords = (fullData.heurist.records || []).filter(record => {
         const recType = record.rec_RecTypeName || "Outros";
         
-        // Bloqueia o lixo do Heurist de aparecer na lista de resultados
-        const ignoredTypes = ['Record relationship', 'CMS Menu-Page', 'CMS_Home', 'Person'];
-        if (ignoredTypes.includes(recType)) return false;
-        
+        if (recType === 'Record relationship') return false;
         if (selectedEntity !== 'all' && recType !== selectedEntity) return false;
-
+        
         if (yearMinInput || yearMaxInput) {
             const yearDetail = (record.details || []).find(d => d.fieldName === 'Ano(s) de produção');
             if (!yearDetail) return false; 
