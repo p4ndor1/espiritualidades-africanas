@@ -426,4 +426,4 @@ const setupEventListeners = () => {
     document.getElementById('clear-filters-button').addEventListener('click', clearFilters);
 };
 
-initPage();
+initPage()
