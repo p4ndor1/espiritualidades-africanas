@@ -1,4 +1,9 @@
-// explorar.js - Vínculos Dinâmicos e Nova Ordem de Filtros
+// explorar.js - Vínculos Dinâmicos, Nova Ordem de Filtros e API Key de Mapa
+
+// ==========================================
+// INSIRA SUA CHAVE DE API AQUI
+const API_KEY = 'SUA_CHAVE_DE_API_AQUI'; 
+// ==========================================
 
 let fullData = {};
 let filteredRecords = [];
@@ -29,8 +34,18 @@ const initPage = () => {
 
 const initMap = () => {
     map = L.map('map-placeholder').setView([20, 0], 3);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap &copy; CARTO',
+
+    // Configuração do mapa COM a chave de API
+    // Nota: O formato da URL muda dependendo do serviço.
+    // Exemplo genérico que usa a API_KEY como parâmetro:
+    const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    
+    // Se o serviço antigo (CARTO) não funcionar mais e você não quiser usar chave nenhuma, 
+    // comente a linha acima e use a linha gratuita padrão do OpenStreetMap abaixo:
+    // const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+    L.tileLayer(tileUrl, {
+        attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 19
     }).addTo(map);
 
@@ -73,8 +88,11 @@ const updateMapMarkers = (records) => {
         }
     });
 
-    if (validMarkers.length > 0) map.fitBounds(validMarkers, { padding: [50, 50], maxZoom: 8 });
-    else map.setView([20, 0], 3);
+    if (validMarkers.length > 0) {
+        map.fitBounds(validMarkers, { padding: [50, 50], maxZoom: 8 });
+    } else {
+        map.setView([20, 0], 3);
+    }
 };
 
 window.displayRecordDetailsFromMap = (recID) => {
@@ -124,11 +142,9 @@ const generateDynamicFilters = () => {
 
     dynamicFiltersContainer.innerHTML = '';
     const entitiesProcess = selectedEntity === 'all' ? Object.keys(allFields) : [selectedEntity];
-
-    // ORDEM EXATA DOS FILTROS COMO PEDIDO PELO PROFESSOR
     const requestedOrder = ['Papel', 'Tipo de prática'];
 
-    // 1. Renderiza Papel e Tipo de Prática primeiro
+    // 1. Renderiza Papel e Tipo de Prática
     requestedOrder.forEach(fieldName => {
         let options = new Set();
         entitiesProcess.forEach(entity => {
@@ -145,7 +161,7 @@ const generateDynamicFilters = () => {
         }
     });
 
-    // 2. Renderiza o Ano (Intervalo) no meio
+    // 2. Renderiza o Ano
     dynamicFiltersContainer.innerHTML += `
         <div class="filter-group">
             <label>Ano (Intervalo):</label>
@@ -156,7 +172,7 @@ const generateDynamicFilters = () => {
         </div>
     `;
 
-    // 3. Renderiza o Restante da Ordem
+    // 3. Renderiza o Restante
     const restOrder = ['Condição jurídica', 'Qualidade ou cor', 'Nação'];
     restOrder.forEach(fieldName => {
         let options = new Set();
@@ -268,7 +284,6 @@ const renderResultsList = (records) => {
     });
 };
 
-// --- Exibição de Detalhes com Links Dinâmicos (Pessoa <-> Documento) ---
 const displayRecordDetails = (record) => {
     document.querySelectorAll('.document-item').forEach(item => item.classList.remove('selected'));
     const activeItem = document.querySelector(`[data-record-id="${record.rec_ID}"]`);
@@ -287,7 +302,6 @@ const displayRecordDetails = (record) => {
         let value = detail.termLabel || detail.value;
         let linkedRecId = null;
 
-        // Tenta capturar ID de relacionamento caso o campo seja um vínculo no Heurist
         if (typeof detail.value === 'object' && detail.value !== null) {
             if (detail.value.id) linkedRecId = detail.value.id;
             else if (detail.value.rec_ID) linkedRecId = detail.value.rec_ID;
@@ -297,7 +311,6 @@ const displayRecordDetails = (record) => {
             value = value.title.replace(/\n/g, ' - ');
         }
         
-        // Se não achou ID direto, tenta buscar na base pelo texto exato
         if (!linkedRecId && typeof value === 'string') {
             const possibleMatch = fullData.heurist.records.find(r => (r.rec_Title || '').replace(/\n/g, ' - ') === value);
             if (possibleMatch) linkedRecId = possibleMatch.rec_ID;
@@ -309,7 +322,6 @@ const displayRecordDetails = (record) => {
 
         value = String(value || 'N/A');
 
-        // Cria a âncora clicável se existir um ID de vínculo
         let displayHTML = value;
         if (linkedRecId && linkedRecId !== record.rec_ID) {
             displayHTML = `<a href="javascript:void(0)" onclick="displayRecordDetailsFromMap('${linkedRecId}')" style="color: var(--color-accent); text-decoration: underline; font-weight: bold; cursor: pointer;">${value} &raquo;</a>`;
@@ -322,7 +334,6 @@ const displayRecordDetails = (record) => {
         } else if (['Link para acesso', 'URL', 'Cota'].includes(label)) {
             links.push({ label, value });
         } else if (['Documento', 'Denunciante', 'Denunciado(a)', 'Citado(a)', 'Autoridades', 'Testemunha', 'Apresentado(a)'].includes(label)) {
-            // Documento também entra aqui para pessoas listarem seus docs
             if (!peopleInfo[label]) peopleInfo[label] = [];
             peopleInfo[label].push(displayHTML);
         } else if (!label.includes('Geolocalização') && label !== 'Código de imagem') {

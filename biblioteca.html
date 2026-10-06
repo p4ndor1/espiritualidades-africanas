@@ -7,36 +7,188 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
     <style>
-        main { padding-top: 120px; min-height: 80vh; display: flex; align-items: center; justify-content: center; }
-        .construction-box {
-            background-color: var(--bg-glass-light); padding: 50px; border-radius: 12px;
-            border: 1px solid rgba(28, 17, 10, 0.2); text-align: center; max-width: 600px;
+        main { padding-top: 120px; min-height: 100vh; }
+        .biblioteca-header { text-align: center; margin-bottom: 60px; }
+        
+        /* Subtítulo com visual "Glassmorphism" modernizado */
+        .subtitle-box {
+            max-width: 700px;
+            margin: 20px auto 0;
+            text-align: center;
+            line-height: 1.6;
+            font-weight: 500;
+            color: var(--color-dark);
+            background: linear-gradient(135deg, rgba(228, 214, 167, 0.4), rgba(228, 214, 167, 0.8));
+            padding: 15px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        .icon-build { font-size: 4em; color: var(--color-accent); margin-bottom: 20px; display: block; }
+        
+        /* Grid mais espaçado */
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        /* Estética dos cards modernizada */
+        .pdf-card {
+            background-color: var(--bg-glass-light, #ffffff);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Linha animada no topo do card */
+        .pdf-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--color-accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .pdf-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(28, 17, 10, 0.08);
+            border-color: rgba(28, 17, 10, 0.1);
+        }
+        
+        .pdf-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        /* Tag de categoria (ex: Artigo, Tese) */
+        .doc-tag {
+            display: inline-block;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: var(--color-accent);
+            background-color: rgba(138, 38, 38, 0.1); /* Tom transparente baseado na sua paleta */
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            width: fit-content;
+        }
+        
+        .pdf-card h3 {
+            color: var(--color-dark);
+            margin-bottom: 12px;
+            font-size: 1.4em;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+        
+        .pdf-card p {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        /* Botão pílula com ícone */
+        .pdf-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: var(--color-dark);
+            color: var(--color-gold, #e4d6a7);
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+        
+        .pdf-button:hover {
+            background-color: var(--color-accent);
+            color: var(--color-white, #fff);
+            transform: scale(1.02);
+        }
+        
+        /* Ícone SVG da setinha */
+        .pdf-button svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .pdf-button:hover svg {
+            transform: translateX(5px);
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar">
+   <nav class="navbar">
         <div class="container navbar-container">
-            <a href="index.html" class="navbar-logo"><img src="img/Logo projeto.png" alt="Logo" onerror="this.style.display='none';"></a>
-            <div class="hamburger-menu" id="mobile-menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+            <a href="index.html" class="navbar-logo">
+                <img src="img/Logo projeto.png" alt="Logo" onerror="this.style.display='none';">
+            </a>
+            <div class="hamburger-menu" id="mobile-menu">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </div>
             <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="explorar.html">Explorar</a></li>
-    <li><a href="sobre.html">O Projeto</a></li>
-    <li><a href="biblioteca.html">Biblioteca</a></li>
-</ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explorar.html">Explorar</a></li>
+                <li><a href="sobre.html">O Projeto</a></li>
+                <li><a href="biblioteca.html" class="active">Biblioteca</a></li>
+            </ul>
         </div>
     </nav>
+
     <main>
-        <div class="container" style="display:flex; justify-content:center;">
-            <div class="construction-box">
-                <span class="icon-build">🚧</span>
-                <h1>Biblioteca em Construção</h1>
-                <p>Em breve, este espaço será um repositório de conhecimento aberto.</p>
-                <a href="index.html" class="cta-button">Voltar para o Início</a>
+        <div class="container">
+            <header class="biblioteca-header">
+                <h1>Biblioteca</h1>
+                <div class="subtitle-box">
+                    Acesse artigos, teses e fontes primárias analisadas pela equipe de pesquisa.
+                </div>
+            </header>
+
+            <div class="pdf-grid">
+                
+                <!-- CARD 1 -->
+                <div class="pdf-card">
+                    <div>
+                        <span class="doc-tag">Material</span>
+                        <h3>Denúncia 1721</h3>
+                        <p>Este material pedagógico propõe o estudo histórico de uma carta de denúncia enviada à Inquisição no ano de 1721.</p>
+                    </div>
+                    <a href="pdfs/resistencias.pdf" target="_blank" class="pdf-button">
+                        Acessar Documento
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                </div>
+
             </div>
         </div>
     </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Projeto Espiritualidades Africanas.</p>
+        </div>
+    </footer>
 </body>
 </html>

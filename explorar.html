@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="style.css">
+    
     <script src="data/dados.js"></script> 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script src="script.js" defer></script> 
     <script src="explorar.js" defer></script> 
+    
     <style>
         main { padding-top: 120px; min-height: 100vh; }
         .explore-header { text-align: center; margin-bottom: 40px; }
@@ -25,6 +27,7 @@
         }
         .filter-group { margin-bottom: 25px; }
         .filter-group label { display: block; font-weight: bold; margin-bottom: 8px; font-family: var(--font-heading); font-size: 0.9em; color: var(--color-accent); }
+        
         #result-list { list-style: none; max-height: 400px; overflow-y: auto; border-top: 1px solid rgba(28,17,10,0.1); padding-top: 10px; }
         .document-item { padding: 8px 5px; cursor: pointer; border-bottom: 1px dashed rgba(28,17,10,0.2); transition: background-color 0.2s; line-height: 1.3; }
         .document-item:hover { background-color: rgba(155, 41, 21, 0.1); }
@@ -60,7 +63,9 @@
         <div class="container">
             <header class="explore-header">
                 <h1>Base de Dados Interativa</h1>
-                <p style="max-width: 800px; margin: 15px auto 0; text-align: center; line-height: 1.6; font-weight: 600; color: var(--color-dark); background: rgba(228, 214, 167, 0.6); padding: 10px 20px; border-radius: 8px; backdrop-filter: blur(4px);">Filtre os registros e explore a geolocalização dos documentos.</p>
+                <p style="max-width: 800px; margin: 15px auto 0; text-align: center; line-height: 1.6; font-weight: 600; color: var(--color-dark); background: rgba(228, 214, 167, 0.6); padding: 10px 20px; border-radius: 8px; backdrop-filter: blur(4px);">
+                    Filtre os registros e explore a geolocalização dos documentos.
+                </p>
             </header>
 
             <div class="explore-layout">
@@ -74,6 +79,7 @@
                         <label for="search-text">Busca por texto:</label>
                         <input type="text" id="search-text" placeholder="Palavras-chave...">
                     </div>
+                    
                     <div class="filter-group">
                         <label for="entity-filter">Tipo de registro:</label>
                         <select id="entity-filter"><option value="all">Todos</option></select>
@@ -82,6 +88,7 @@
                     <div id="dynamic-filters"></div>
                     
                     <button id="clear-filters-button" class="cta-button" style="width: 100%; margin-bottom: 15px; background-color: var(--color-dark); border-color: var(--color-dark);">Limpar Filtros</button>
+                    
                     <div>
                         <label style="border-bottom: 1px solid var(--color-accent); display:block; padding-bottom:5px; margin-bottom:10px;">
                             Lista de Resultados: (<span id="results-count">0</span>)
