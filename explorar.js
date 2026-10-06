@@ -35,14 +35,10 @@ const initPage = () => {
 const initMap = () => {
     map = L.map('map-placeholder').setView([20, 0], 3);
 
-    // Configuração do mapa COM a chave de API
-    // Nota: O formato da URL muda dependendo do serviço.
-    // Exemplo genérico que usa a API_KEY como parâmetro:
-    const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     
     // Se o serviço antigo (CARTO) não funcionar mais e você não quiser usar chave nenhuma, 
     // comente a linha acima e use a linha gratuita padrão do OpenStreetMap abaixo:
-    // const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
     L.tileLayer(tileUrl, {
         attribution: '&copy; OpenStreetMap contributors',
